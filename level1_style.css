@@ -1,0 +1,347 @@
+
+/* 전체 화면 */
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: linear-gradient(
+        135deg,
+        #c9f1ff,
+        #f8cee9
+    );
+
+    font-family: Arial, sans-serif;
+}
+.phone {
+    width: 420px;
+    height: 780px;
+
+    background-color: #151515;
+    border: 5px solid #111;
+    border-radius: 40px;
+    padding: 9px;
+    box-shadow: 0 5px 12px #888;
+}
+
+/* 휴대폰 내부 화면 */
+.screen {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    overflow: hidden;
+
+    background: linear-gradient(
+        #b6edff,
+        #ffffff 45%,
+        #e7ffd9
+    );
+
+    border-radius: 27px;
+}
+
+/* 상단 제목 */
+header {
+    padding: 20px 15px 0;
+    text-align: center;
+}
+
+header h3 {
+    margin: 0 0 12px;
+    font-size: 20px;
+}
+
+/* 진행 상태 */
+.progress-area {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.progress-area span {
+    font-size: 13px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 12px;
+
+    background: white;
+    border: 1px solid #8bd3ed;
+    border-radius: 20px;
+
+    overflow: hidden;
+}
+
+#progressFill {
+    width: 33.33%;
+    height: 100%;
+
+    background: #ff8fa5;
+    border-radius: 20px;
+}
+
+.star {
+    font-size: 24px !important;
+}
+
+/* 문제 설명 */
+.instruction {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+
+    margin-top: 28px;
+}
+
+/* 단어 이미지 영역 */
+.image-box {
+    width: 210px;
+    height: 190px;
+
+    margin: 18px auto;
+
+    background: #fff6df;
+    border-radius: 15px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#wordImage {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+#wordEmoji {
+    font-size: 110px;
+}
+
+/* 단어 + 듣기 버튼 */
+.word-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.word-area h1 {
+    font-size: 42px;
+    margin: 0;
+    color: #40201c;
+}
+
+/* 듣기 버튼 */
+.listen-btn {
+    width: 55px;
+    height: 55px;
+
+    border-radius: 50%;
+    border: 3px solid #a7dfef;
+
+    background: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.listen-btn span {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* 마이크 버튼 */
+.mic-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 85px;
+    height: 85px;
+
+    margin: 25px auto 0;
+
+    border-radius: 50%;
+    border: 4px solid #f6bdcd;
+
+    background: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.mic-btn span {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* 음성 인식 결과 */
+#result {
+    text-align: center;
+    font-size: 12px;
+    padding: 0 60px;
+    margin-top: 10px;
+    min-height: 35px;
+    color: #555;
+}
+
+/* 씨앗 캐릭터 위치 */
+.seed {
+    position: absolute;
+
+    right: 10px;
+    bottom: 70px;
+
+    width: 75px;
+    height: 95px;
+}
+
+/* 씨앗 몸통 */
+.seed-body {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+
+    width: 55px;
+    height: 65px;
+
+    background: #f5bd73;
+    border: 3px solid #c48d48;
+    border-radius: 45% 45% 50% 50%;
+
+    z-index: 2;
+}
+
+/* 씨앗 눈 */
+.eyes {
+    position: absolute;
+    top: 25px;
+    left: 12px;
+
+    display: flex;
+    gap: 15px;
+}
+
+.eyes span {
+    width: 5px;
+    height: 7px;
+
+    background: #49342b;
+    border-radius: 50%;
+}
+
+/* 씨앗 볼 */
+.cheeks {
+    position: absolute;
+    top: 35px;
+    left: 7px;
+
+    display: flex;
+    gap: 26px;
+}
+
+.cheeks span {
+    width: 11px;
+    height: 7px;
+
+    background: #ef9292;
+    border-radius: 50%;
+}
+
+/* 씨앗 입 */
+.mouth {
+    position: absolute;
+
+    width: 11px;
+    height: 6px;
+
+    top: 40px;
+    left: 22px;
+
+    border-bottom: 2px solid #49342b;
+    border-radius: 50%;
+}
+
+/* 씨앗 줄기 */
+.stem {
+    position: absolute;
+    top: 10px;
+    left: 37px;
+
+    width: 5px;
+    height: 30px;
+
+    background: #68ab62;
+    transform: rotate(-8deg);
+}
+
+/* 씨앗 잎 */
+.leaf {
+    position: absolute;
+
+    width: 26px;
+    height: 15px;
+
+    background: #8cce74;
+    border: 2px solid #55944b;
+
+    border-radius: 80% 0 80% 0;
+}
+
+.leaf-left {
+    top: 5px;
+    left: 13px;
+
+    transform: rotate(35deg);
+}
+
+.leaf-right {
+    top: 2px;
+    left: 38px;
+
+    transform: rotate(-35deg);
+}
+
+/* 완료 버튼 */
+.next-btn {
+    position: absolute;
+
+    bottom: 15px;
+    left: 20px;
+
+    width: calc(100% - 40px);
+    height: 42px;
+
+    background: #61c5e9;
+    color: white;
+
+    border: 2px solid #2b98c5;
+    border-radius: 20px;
+
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 버튼 클릭 효과 */
+button:active {
+    transform: scale(0.96);
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

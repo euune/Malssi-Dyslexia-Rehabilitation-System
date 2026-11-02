@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>말씨 - 읽기 훈련</title>
+
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" href="level1_style.css">
+</head>
+<body>
+
+    <div class="phone">
+        <div class="screen">
+
+            <!-- 문제 영역 -->
+            <main>
+                <p class="instruction">
+                    그림을 보고 단어를 말해보세요!
+                </p>
+
+                <!-- 단어 이미지 -->
+                <div class="image-box">
+                    <img id="wordImage" alt="단어 그림" hidden>
+                    <span id="wordEmoji"></span>
+                </div>
+
+                <!-- 단어 + 듣기 버튼 -->
+                <div class="word-area">
+                    <h1 id="wordText">발</h1>
+
+                    <button id="listenBtn" class="listen-btn">
+                        🔊
+                        <span>듣기</span>
+                    </button>
+                </div>
+
+                <!-- 따라 읽기 버튼 -->
+                <button id="micBtn" class="mic-btn">
+                    🎤
+                    <span>말하기</span>
+                </button>
+
+                <!-- 음성 인식 결과 -->
+                <p id="result" aria-live="polite"></p>
+            </main>
+
+            <!-- 씨앗 캐릭터 -->
+            <div class="seed">
+                <div class="leaf leaf-left"></div>
+                <div class="leaf leaf-right"></div>
+                <div class="stem"></div>
+
+                <div class="seed-body">
+                    <div class="eyes">
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="cheeks">
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <div class="mouth"></div>
+                </div>
+            </div>
+
+            <!-- 완료 버튼 -->
+            <button id="nextBtn" class="next-btn">
+                완료
+            </button>
+
+        </div>
+    </div>
+
+    <!-- JavaScript 연결 -->
+    <script src="level1_script.js"></script>
+</body>
+</html>
