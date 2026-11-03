@@ -26,7 +26,8 @@
     noInputMs: 8000, // 이 시간 동안 아무 말이 없으면 무응답
     maxRetry: 4, // 같은 문장 재시도가 이 횟수 이상이면 L4(보류)
     sentenceTimeLimitMs: 120000, // 같은 문장에 이 시간 이상 머물면 L4(보류)
-    ttsRate: 0.85,
+    ttsRate: 0.85, // 말하기 속도 (0.5 느림 ~ 1 보통 ~ 2 빠름)
+    ttsPitch: 1.1, // 목소리 높낮이 (0 낮음 ~ 1 보통 ~ 2 높음)
   };
   const STORAGE_KEY = 'malssi.reading.v1';
   const SENTENCES_PER_CHAPTER = 3;
@@ -144,45 +145,122 @@
   }
 
   // ───────────────────────── 음성 출력 (모델 음성) ─────────────────────────
+  // 목소리 고르기: 저장된 선택 → 자연스러운 음성(Natural/Online) → Microsoft → Google → 첫 한국어 음성
+  const VOICE_KEY = 'malssi.voice.v1';
+  const PACE_KEY = 'malssi.pace.v1'; // 목소리별 실제 말하기 속도(글자당 ms) 학습값
+  function koVoices() {
+    if (!('speechSynthesis' in window)) return [];
+    return speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().replace('_', '-').startsWith('ko'));
+  }
+  function savedVoiceName() {
+    try { return localStorage.getItem(VOICE_KEY); } catch (e) { return null; }
+  }
+  function pickVoice() {
+    const list = koVoices();
+    if (!list.length) return null;
+    const saved = savedVoiceName();
+    return (
+      list.find((v) => v.name === saved) ||
+      list.find((v) => /natural|online/i.test(v.name)) ||
+      list.find((v) => /microsoft/i.test(v.name)) ||
+      list.find((v) => /google/i.test(v.name)) ||
+      list[0]
+    );
+  }
+  function setVoice(name) {
+    try { localStorage.setItem(VOICE_KEY, name); } catch (e) { /* 무시 */ }
+  }
+  let pace = (() => {
+    try { return JSON.parse(localStorage.getItem(PACE_KEY)) || {}; } catch (e) { return {}; }
+  })();
+  function savePace() {
+    try { localStorage.setItem(PACE_KEY, JSON.stringify(pace)); } catch (e) { /* 무시 */ }
+  }
+
   function speak(text, { onWord, onEnd } = {}) {
     const words = text.split(/\s+/).filter(Boolean);
     const lens = words.map((w) => Math.max(1, w.replace(/[^가-힣A-Za-z0-9]/g, '').length));
     const total = lens.reduce((a, b) => a + b, 0);
-    const estMs = (total * 260) / CFG.ttsRate + words.length * 120;
+    const units = total + words.length * 0.5; // 띄어쓰기마다 짧은 쉼
+    // 각 단어가 원문에서 시작하는 글자 위치(onboundary의 charIndex와 맞추기 위함)
+    const starts = [];
+    { let from = 0; words.forEach((w) => { const at = text.indexOf(w, from); starts.push(at); from = at + w.length; }); }
+    const wordAt = (charIndex) => {
+      let i = 0;
+      while (i + 1 < starts.length && starts[i + 1] <= charIndex) i++;
+      return i;
+    };
+
+    const voice = pickVoice();
+    const voiceKey = voice ? voice.name : 'none';
+    const msPerUnit = pace[voiceKey] || 230 / CFG.ttsRate;
+    const estMs = units * msPerUnit;
+
     let done = false;
-    const finish = () => {
+    let boundaryWorks = false;
+    let startedAt = 0;
+    let fallback = [];
+    let current = -1;
+    const show = (i) => {
+      if (done || i === current) return;
+      current = i;
+      if (onWord) onWord(i);
+    };
+    const finish = (natural) => {
       if (done) return;
+      // 실제로 끝까지 읽은 시간으로 이 목소리의 속도를 학습 → 다음 문장부터 추정이 정확해짐
+      if (natural && startedAt && !boundaryWorks) {
+        const real = (performance.now() - startedAt) / units;
+        if (real > 60 && real < 1200) {
+          pace[voiceKey] = pace[voiceKey] ? pace[voiceKey] * 0.5 + real * 0.5 : real;
+          savePace();
+        }
+      }
       done = true;
+      fallback.forEach(clearTimeout);
       if (onWord) onWord(-1);
       if (onEnd) onEnd();
     };
-    const runHighlight = () => {
-      // 단어 경계 이벤트가 브라우저마다 달라서 글자 수 비례 타이머로 단어를 비춥니다.
+    const runFallback = () => {
+      // 단어 경계 이벤트(onboundary)가 오지 않는 목소리용: 글자 수 비례 타이머
       let acc = 0;
       words.forEach((_, i) => {
-        later(() => !done && onWord && onWord(i), (acc / total) * estMs);
-        acc += lens[i];
+        fallback.push(later(() => { if (!boundaryWorks) show(i); }, (acc / units) * estMs));
+        acc += lens[i] + 0.5;
       });
     };
+
     if (!('speechSynthesis' in window)) {
-      runHighlight();
-      later(finish, estMs + 300);
+      runFallback();
+      later(() => finish(false), estMs + 300);
       return;
     }
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ko-KR';
     u.rate = CFG.ttsRate;
-    const voice = speechSynthesis.getVoices().find((v) => v.lang && v.lang.toLowerCase().startsWith('ko'));
+    u.pitch = CFG.ttsPitch;
     if (voice) u.voice = voice;
-    let started = false;
-    u.onstart = () => { started = true; runHighlight(); };
-    u.onend = finish;
-    u.onerror = finish;
+    u.onstart = () => {
+      startedAt = performance.now();
+      show(0);
+      runFallback();
+    };
+    // 브라우저가 "지금 이 단어를 읽는 중"이라고 알려 주면 그 위치를 그대로 비춤 (가장 정확)
+    u.onboundary = (e) => {
+      if (e.name && e.name !== 'word') return;
+      if (!boundaryWorks) {
+        boundaryWorks = true;
+        fallback.forEach(clearTimeout);
+      }
+      show(wordAt(e.charIndex));
+    };
+    u.onend = () => finish(true);
+    u.onerror = () => finish(false);
     speechSynthesis.speak(u);
     // 한국어 음성이 없거나 onstart가 오지 않는 환경 대비
-    later(() => { if (!started) { runHighlight(); later(finish, estMs); } }, 900);
-    later(finish, estMs + 4000);
+    later(() => { if (!startedAt && !done) { startedAt = performance.now(); runFallback(); later(() => finish(false), estMs); } }, 900);
+    later(() => finish(false), estMs * 2 + 4000);
   }
 
   function stopSpeaking() {
@@ -447,6 +525,9 @@
           <button class="hint" id="hint">🔈 들어 보기</button>
           ${Rec ? '<button class="mic" id="mic">🎤 읽어 주기</button>' : ''}
         </div>
+        <label class="voice-pick" id="voicePick" hidden>🗣️ 씨앗 목소리
+          <select id="voiceSel" aria-label="씨앗 목소리 고르기"></select>
+        </label>
         ${!Rec ? '<p class="note">이 브라우저는 음성 인식을 지원하지 않아요. 휴대폰의 Chrome·Safari에서 열어 주세요. (아래 입력창으로 흐름을 확인할 수 있어요)</p>' : ''}
         <form class="dev" id="dev" ${DEV ? '' : 'hidden'}>
           <input id="devText" autocomplete="off" placeholder="(테스트) 읽은 문장을 입력" aria-label="테스트 입력">
@@ -462,7 +543,26 @@
     else say(pick(S.idx === 0 ? LINES.firstSentence : LINES.nextSentence));
   }
 
+  function fillVoiceSelect() {
+    const wrap = $('#voicePick');
+    const sel = $('#voiceSel');
+    if (!wrap || !sel) return;
+    const list = koVoices();
+    wrap.hidden = list.length < 2; // 고를 목소리가 2개 이상일 때만 보여 줌
+    const cur = pickVoice();
+    sel.innerHTML = list
+      .map((v) => `<option value="${esc(v.name)}" ${cur && v.name === cur.name ? 'selected' : ''}>${esc(v.name.replace(/^(Microsoft|Google)\s*/i, '').replace(/\s*-\s*Korean.*$/i, ''))}</option>`)
+      .join('');
+  }
+
   function bindReadControls() {
+    fillVoiceSelect();
+    const sel = $('#voiceSel');
+    if (sel) sel.addEventListener('change', () => {
+      setVoice(sel.value);
+      if (listening) cancelListening();
+      modelRead(); // 바뀐 목소리로 바로 들려주기
+    });
     const mic = $('#mic');
     if (mic) mic.addEventListener('click', () => (listening ? rec && rec.stop() : listen()));
     $('#hint').addEventListener('click', () => {
@@ -700,7 +800,10 @@
   }
 
   // 음성 목록은 비동기로 로드되는 브라우저가 있어 미리 요청
-  if ('speechSynthesis' in window) speechSynthesis.getVoices();
+  if ('speechSynthesis' in window) {
+    speechSynthesis.getVoices();
+    speechSynthesis.addEventListener('voiceschanged', fillVoiceSelect);
+  }
 
   renderMap();
 })();
