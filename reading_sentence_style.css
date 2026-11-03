@@ -116,7 +116,7 @@ button:disabled { cursor: default; }
   transition: font-size .35s, letter-spacing .35s, word-spacing .35s;
 }
 .sentence.support { font-size: 27px; letter-spacing: .14em; word-spacing: .35em; line-height: 2.1; }
-.sentence .w { border-radius: 6px; padding: 0 2px; transition: background .2s; }
+.sentence .w { border-radius: 6px; padding: 0 2px; transition: background .08s; }
 .sentence .w.weak { font-weight: 700; background: var(--weak); box-shadow: inset 0 -3px 0 var(--sun); }
 .sentence .w.reading { background: var(--leaf-soft); box-shadow: inset 0 -3px 0 var(--leaf); }
 .heard { min-height: 20px; margin: 10px 0 0; font-size: 14px; color: var(--muted); }
@@ -154,4 +154,12 @@ button:disabled { opacity: .5; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* 씨앗 목소리 고르기 */
+.voice-pick { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 14px; color: var(--muted); }
+.voice-pick[hidden] { display: none; }
+.voice-pick select {
+  flex: 1; min-width: 0; padding: 8px 10px; border-radius: 12px;
+  border: 2px solid var(--line); background: var(--card); font: inherit; color: inherit;
 }
