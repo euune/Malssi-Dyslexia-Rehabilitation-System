@@ -27,7 +27,6 @@
     maxRetry: 4, // 같은 문장 재시도가 이 횟수 이상이면 L4(보류)
     sentenceTimeLimitMs: 120000, // 같은 문장에 이 시간 이상 머물면 L4(보류)
     ttsRate: 0.85, // 말하기 속도 (0.5 느림 ~ 1 보통 ~ 2 빠름)
-    ttsPitch: 1.1, // 목소리 높낮이 (0 낮음 ~ 1 보통 ~ 2 높음)
   };
   const STORAGE_KEY = 'malssi.reading.v1';
   const SENTENCES_PER_CHAPTER = 3;
@@ -145,30 +144,12 @@
   }
 
   // ───────────────────────── 음성 출력 (모델 음성) ─────────────────────────
-  // 목소리 고르기: 저장된 선택 → 자연스러운 음성(Natural/Online) → Microsoft → Google → 첫 한국어 음성
-  const VOICE_KEY = 'malssi.voice.v1';
+  // 기본 한국어 목소리 사용 (브라우저가 기본으로 정한 한국어 목소리 → 없으면 첫 한국어 목소리)
   const PACE_KEY = 'malssi.pace.v1'; // 목소리별 실제 말하기 속도(글자당 ms) 학습값
-  function koVoices() {
-    if (!('speechSynthesis' in window)) return [];
-    return speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().replace('_', '-').startsWith('ko'));
-  }
-  function savedVoiceName() {
-    try { return localStorage.getItem(VOICE_KEY); } catch (e) { return null; }
-  }
   function pickVoice() {
-    const list = koVoices();
-    if (!list.length) return null;
-    const saved = savedVoiceName();
-    return (
-      list.find((v) => v.name === saved) ||
-      list.find((v) => /natural|online/i.test(v.name)) ||
-      list.find((v) => /microsoft/i.test(v.name)) ||
-      list.find((v) => /google/i.test(v.name)) ||
-      list[0]
-    );
-  }
-  function setVoice(name) {
-    try { localStorage.setItem(VOICE_KEY, name); } catch (e) { /* 무시 */ }
+    if (!('speechSynthesis' in window)) return null;
+    const list = speechSynthesis.getVoices().filter((v) => v.lang && v.lang.toLowerCase().replace('_', '-').startsWith('ko'));
+    return list.find((v) => v.default) || list[0] || null;
   }
   let pace = (() => {
     try { return JSON.parse(localStorage.getItem(PACE_KEY)) || {}; } catch (e) { return {}; }
@@ -239,7 +220,6 @@
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'ko-KR';
     u.rate = CFG.ttsRate;
-    u.pitch = CFG.ttsPitch;
     if (voice) u.voice = voice;
     u.onstart = () => {
       startedAt = performance.now();
@@ -525,9 +505,6 @@
           <button class="hint" id="hint">🔈 들어 보기</button>
           ${Rec ? '<button class="mic" id="mic">🎤 읽어 주기</button>' : ''}
         </div>
-        <label class="voice-pick" id="voicePick" hidden>🗣️ 씨앗 목소리
-          <select id="voiceSel" aria-label="씨앗 목소리 고르기"></select>
-        </label>
         ${!Rec ? '<p class="note">이 브라우저는 음성 인식을 지원하지 않아요. 휴대폰의 Chrome·Safari에서 열어 주세요. (아래 입력창으로 흐름을 확인할 수 있어요)</p>' : ''}
         <form class="dev" id="dev" ${DEV ? '' : 'hidden'}>
           <input id="devText" autocomplete="off" placeholder="(테스트) 읽은 문장을 입력" aria-label="테스트 입력">
@@ -543,26 +520,7 @@
     else say(pick(S.idx === 0 ? LINES.firstSentence : LINES.nextSentence));
   }
 
-  function fillVoiceSelect() {
-    const wrap = $('#voicePick');
-    const sel = $('#voiceSel');
-    if (!wrap || !sel) return;
-    const list = koVoices();
-    wrap.hidden = list.length < 2; // 고를 목소리가 2개 이상일 때만 보여 줌
-    const cur = pickVoice();
-    sel.innerHTML = list
-      .map((v) => `<option value="${esc(v.name)}" ${cur && v.name === cur.name ? 'selected' : ''}>${esc(v.name.replace(/^(Microsoft|Google)\s*/i, '').replace(/\s*-\s*Korean.*$/i, ''))}</option>`)
-      .join('');
-  }
-
   function bindReadControls() {
-    fillVoiceSelect();
-    const sel = $('#voiceSel');
-    if (sel) sel.addEventListener('change', () => {
-      setVoice(sel.value);
-      if (listening) cancelListening();
-      modelRead(); // 바뀐 목소리로 바로 들려주기
-    });
     const mic = $('#mic');
     if (mic) mic.addEventListener('click', () => (listening ? rec && rec.stop() : listen()));
     $('#hint').addEventListener('click', () => {
@@ -800,10 +758,7 @@
   }
 
   // 음성 목록은 비동기로 로드되는 브라우저가 있어 미리 요청
-  if ('speechSynthesis' in window) {
-    speechSynthesis.getVoices();
-    speechSynthesis.addEventListener('voiceschanged', fillVoiceSelect);
-  }
+  if ('speechSynthesis' in window) speechSynthesis.getVoices();
 
   renderMap();
 })();
