@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>말씨 · 읽기 – 문장</title>
+  <meta name="description" content="씨앗에게 동화를 한 문장씩 소리 내어 읽어 주는 읽기 놀이">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css?v=202611070336">
+  <link rel="stylesheet" href="style.css?v=202611070336">
+</head>
+<body>
+  <!-- 처음 화면과 같은 상단 바: 🏡 정원으로 / 씨앗 이름 · 성장 단계 / 성장 막대 -->
+  <header class="topbar">
+    <a class="icon-btn" href="../index.html" aria-label="정원으로">🏡</a>
+    <div class="growth">
+      <div class="growth-label"><span id="seed-name">씨앗</span> · <span id="stage-name">아기 씨앗</span></div>
+      <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
+    </div>
+  </header>
+
+  <main id="app"></main>
+  <div class="overlay hidden" id="overlay"></div>
+
+  <!-- 공통: 같은 씨앗(seed.js)과 같은 경험치·성장(store.js, growth.js)을 처음 화면과 함께 씀 -->
+  <script src="../js/hangul.js?v=202611070336"></script>
+  <script src="../js/engine.js?v=202611070336"></script>
+  <script src="../js/store.js?v=202611070336"></script>
+  <script src="../js/seed.js?v=202611070336"></script>
+  <script src="../js/growth.js?v=202611070336"></script>
+
+  <!-- hangul.js: 자소 비교 / story.js: 동화 7장 (문장·질문은 여기서 수정) / app.js: 화면·피드백 흐름 -->
+  <script src="hangul.js?v=202611070336"></script>
+  <script src="story.js?v=202611070336"></script>
+  <script src="app.js?v=202611070336"></script>
+</body>
+</html>
