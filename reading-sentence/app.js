@@ -467,9 +467,23 @@
     const got = S.phase === 'read' ? S.idx : SENTENCES_PER_CHAPTER;
     const lines = S.data.sentences.slice(0, got);
     const book = $('#book');
+    book.classList.remove('has-image');
     book.innerHTML = lines.length
       ? lines.map((s, i) => `<p class="${i === newIdx ? 'new' : ''} ${i === focusIdx ? 'focus' : ''}">${esc(s)}</p>`).join('')
       : '<p class="empty">씨앗에게 읽어 준 문장이 여기에 모여 동화가 돼요.</p>';
+    renderDots();
+  }
+    /** 퀴즈 화면: 읽은 문장 3줄 대신 장 그림(story.js 의 image). 그림이 없거나 못 불러오면 빈칸 */
+  function renderQuizImage() {
+    const book = $('#book');
+    book.classList.add('has-image');
+    const blank = () => { book.innerHTML = '<figure class="quiz-figure blank" aria-hidden="true"></figure>'; };
+    const src = S.data.image;
+    if (!src) blank();
+    else {
+      book.innerHTML = `<figure class="quiz-figure"><img src="${esc(src)}" alt="${S.ch}장 「${esc(S.data.title)}」 그림"></figure>`;
+      book.querySelector('img').addEventListener('error', blank, { once: true });
+    }
     renderDots();
   }
 
