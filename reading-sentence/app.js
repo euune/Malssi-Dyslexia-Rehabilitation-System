@@ -25,6 +25,7 @@
   // ───────────────────────── 설정 ─────────────────────────
   const CFG = {
     passScore: 0.8, // 문장 전체 자소 유사도가 이 이상이면 "씨앗이 알아들음"
+    wordPassScore: 0.95, // 문장 속 낱말 하나하나가 모두 이 이상이어야 통과
     wordOkScore: 0.95, // 단어 유사도가 이보다 낮으면 L2에서 강조
     silenceEndMs: 1800, // 말이 끊긴 뒤 이 시간이 지나면 듣기 종료
     noInputMs: 8000, // 이 시간 동안 아무 말이 없으면 무응답
@@ -256,7 +257,7 @@
       const cands = candidatesFrom(results);
       showHeard(cands[0] || '');
       clearTimeout(silenceT);
-      const ok = Hangul.compareSentence(currentSentence(), cands).score >= CFG.passScore;
+      const ok = isReached(Hangul.compareSentence(currentSentence(), cands));
       silenceT = setTimeout(stop, ok ? 500 : CFG.silenceEndMs);
     };
     r.onerror = (e) => {
@@ -544,13 +545,17 @@
       },
     });
   }
+   /** 문장 전체가 비슷하고, 낱말 하나하나도 모두 제대로 읽었을 때만 "씨앗이 알아들음" */
+  function isReached(result) {
+    return !result.empty && result.score >= CFG.passScore && result.words.every((w) => w >= CFG.wordPassScore);
+  }
 
   /** 응답 판정 → 응답 유형(A: 도달, C: 잘 전달되지 않음, D: 무응답)에 따라 피드백 */
   function evaluate(candidates) {
     if (!S || (S.phase !== 'read' && S.phase !== 'reread')) return;
     const result = Hangul.compareSentence(currentSentence(), candidates);
     if (!result.empty) { S.attempts = (S.attempts || 0) + 1; addExp(S.attempts === 1 ? EXP.firstTry : EXP.retry, { text: '✨', from: $('#sentence') }); }
-    if (!result.empty && result.score >= CFG.passScore) onReached();
+    if (isReached(result)) onReached();
     else onNotYet(result.empty ? 'D' : 'C', result);
   }
 
