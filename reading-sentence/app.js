@@ -691,7 +691,7 @@
   function showQuiz() {
     stopAll();
     S.phase = 'quiz';
-    renderBook();
+    renderQuizImage(); 
     const q = S.data.quiz;
     const opts = q.options.map((text, i) => ({ text, expected: i === 0 }));
     for (let i = opts.length - 1; i > 0; i--) {
