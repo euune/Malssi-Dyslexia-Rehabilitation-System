@@ -11,6 +11,6 @@
   'use strict';
   SG.registerActivity({
     key: 'read-sentence', order: 2, icon: '📚', title: '동화 읽기', desc: '문장을 읽어 동화를 완성해요',
-    start: function () { SG.speech.stopSpeaking(); window.location.href = 'reading-sentence/'; }
+    start: function () { SG.speech.stopSpeaking(); window.location.href = 'reading-sentence/index.html'; }
   });
 })();
