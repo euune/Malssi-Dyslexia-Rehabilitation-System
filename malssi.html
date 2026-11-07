@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>말씨 - 씨앗의 말 정원</title>
+  <meta name="description" content="언어를 잃은 세상의 아기 씨앗에게 소리와 글을 알려주는 읽기·쓰기 놀이">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/common.css?v=202611070336">
+  <link rel="stylesheet" href="css/style.css?v=202611070336">
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-btn" id="btn-home" aria-label="정원으로">🏡</button>
+    <div class="growth">
+      <div class="growth-label"><span id="seed-name">씨앗</span> · <span id="stage-name">아기 씨앗</span></div>
+      <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
+    </div>
+    <button class="icon-btn" id="btn-text" aria-label="글자 크게">가+</button>
+  </header>
+
+  <!-- 씨앗과 게임을 한 덩어리로: 위에 작은 씨앗 + 말풍선, 바로 아래 게임 -->
+  <main class="board">
+    <section class="seed-strip scene" id="scene">
+      <div class="seed-wrap">
+        <svg id="seed" viewBox="0 0 200 200" aria-hidden="true"></svg>
+        <div class="bloom-layer" id="bloom-layer"></div>
+      </div>
+      <div class="bubble" id="bubble" aria-live="polite"></div>
+    </section>
+    <div class="panel" id="panel"></div>
+  </main>
+
+  <div class="overlay hidden" id="overlay"></div>
+
+  <!-- 공통 엔진 -->
+  <script src="js/hangul.js?v=202611070336"></script>
+  <script src="js/engine.js?v=202611070336"></script>
+  <script src="js/speech.js?v=202611070336"></script>
+  <script src="js/store.js?v=202611070336"></script>
+  <script src="js/seed.js?v=202611070336"></script>
+  <script src="js/growth.js?v=202611070336"></script>
+
+
+  <!-- 화면 공통(홈·설정) + 활동 타일 4개 (동화 읽기만 연결됨, 나머지는 팀원 게임 자리) -->
+  <script src="js/core.js?v=202611070336"></script>
+  <script src="js/activities/read-word.js?v=202611070336"></script>
+  <script src="js/activities/read-sentence.js?v=202611070336"></script>
+  <script src="js/activities/write-word.js?v=202611070336"></script>
+  <script src="js/activities/write-sentence.js?v=202611070336"></script>
+  <script src="js/main.js?v=202611070336"></script>
+</body>
+</html>
