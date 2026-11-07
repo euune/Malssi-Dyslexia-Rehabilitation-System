@@ -83,6 +83,10 @@ button:disabled { cursor: default; }
 .book p + p { margin-top: 2px; }
 .book p.empty { color: var(--muted); font-size: 14px; text-align: center; }
 .book p.new { animation: settle .8s ease-out; }
+.book.has-image { padding: 8px; background: var(--card); }
+.quiz-figure { margin: 0; }
+.quiz-figure img { display: block; width: 100%; max-height: 42vh; object-fit: contain; border-radius: 12px; }
+.quiz-figure.blank { height: 180px; border-radius: 12px; background: var(--bg); } /* 그림이 없을 때 빈칸 */
 .book p.focus { background: var(--hl); border-radius: 6px; padding: 0 4px; }
 @keyframes settle { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 
