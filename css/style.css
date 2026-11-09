@@ -190,3 +190,12 @@ body { display: flex; flex-direction: column; }
 .build-hint .pic { min-height: 0; }
 .build-arrow { font-size: 24px; color: var(--muted); }
 
+
+/* 학습 기록 저장 (js/db.js) */
+.db-link { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.db-link input {
+  flex: 1 1 160px; min-width: 0; min-height: 40px; padding: 8px 12px;
+  border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: inherit; font: inherit;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+
