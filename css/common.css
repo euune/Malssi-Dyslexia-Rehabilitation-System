@@ -162,3 +162,102 @@ a.btn { display: inline-flex; align-items: center; color: inherit; text-decorati
   35% { filter: brightness(1.3); box-shadow: 0 0 10px 2px var(--sun); }
   100% { filter: brightness(1); box-shadow: none; }
 }
+
+/* ---------- 정원 상단바 (js/growth.js 의 decorate 가 배지·꽃봉오리·나비를 덧붙임) ---------- */
+.topbar {
+  padding: 10px 16px 18px;
+  border-bottom: 0;
+  box-shadow: 0 1px 0 #b7d9a0, 0 4px 10px rgba(90, 140, 70, .10);
+  background:
+    /* 작은 꽃들 (반복) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='18'%3E%3Cg%3E%3Ccircle cx='22' cy='9' r='2.6' fill='%23f7b7d2'/%3E%3Ccircle cx='22' cy='9' r='1' fill='%23f5c64b'/%3E%3Ccircle cx='71' cy='12' r='2.2' fill='%23fff6c9'/%3E%3Ccircle cx='71' cy='12' r='.9' fill='%23f5c64b'/%3E%3Ccircle cx='112' cy='8' r='2.4' fill='%23cfe3ff'/%3E%3Ccircle cx='112' cy='8' r='.9' fill='%23f5c64b'/%3E%3C/g%3E%3C/svg%3E") left bottom 1px / 140px 18px repeat-x,
+    /* 풀잎 (반복) */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='9'%3E%3Cpath d='M2 9 Q3 3 1 0 Q5 4 5 9Z M7 9 Q8 2 10 1 Q9 5 10 9Z M12 9 Q12 4 15 2 Q13 6 15 9Z' fill='%2393c97f'/%3E%3C/svg%3E") left bottom / 16px 9px repeat-x,
+    /* 언덕 */
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 24' preserveAspectRatio='none'%3E%3Cpath d='M0 13 C60 2 120 4 180 12 S300 22 400 7 V24 H0Z' fill='%23dcefcc'/%3E%3Cpath d='M0 18 C90 9 160 12 230 18 S340 23 400 15 V24 H0Z' fill='%23c8e6b4'/%3E%3C/svg%3E") left bottom / 100% 22px no-repeat,
+    /* 하늘 */
+    linear-gradient(180deg, #e6f4f8 0%, #f3f9ee 65%, #eef7e4 100%);
+}
+.topbar .icon-btn {
+  position: relative; z-index: 1;
+  background: rgba(255, 255, 255, .82);
+  border: 1px solid #c9e2b8;
+  box-shadow: 0 2px 0 #c9e2b8;
+}
+.topbar .icon-btn:active { transform: translateY(1px); box-shadow: 0 1px 0 #c9e2b8; }
+
+.growth-label { display: flex; align-items: center; gap: 8px; min-width: 0; }
+#seed-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: #3b5a2e; }
+.stage-chip {
+  flex: none; display: inline-flex; align-items: center; gap: 3px;
+  padding: 0 10px 0 6px; border-radius: 99px; font-size: 14px; line-height: 24px;
+  background: #fff; color: #3f7a43; border: 1px solid #bfe0b0; box-shadow: 0 1px 0 #d9ecd0;
+}
+#stage-icon { font-size: 16px; line-height: 1; }
+
+/* 성장 막대 = 흙 화단 위로 잔디가 자람 */
+.growth-bar {
+  position: relative; height: 14px; margin-top: 6px; overflow: visible;
+  border-radius: 99px;
+  background:
+    radial-gradient(circle at 20% 60%, rgba(90, 60, 30, .18) 0 1.2px, transparent 1.6px) 0 0 / 11px 14px,
+    linear-gradient(180deg, #c69c6b, #b0834f);
+  box-shadow: inset 0 2px 3px rgba(70, 45, 20, .3), 0 1px 0 rgba(255, 255, 255, .7);
+}
+#growth-fill {
+  position: relative; z-index: 1;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='14'%3E%3Cpath d='M1 14 L2.5 5 L4 14Z M6 14 L7.5 3 L9 14Z' fill='%2366b35a' opacity='.55'/%3E%3C/svg%3E") left bottom / 10px 14px repeat-x,
+    linear-gradient(180deg, #9ddc87, #5fae55 70%, #4f9a54);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55);
+}
+.growth-bud {
+  position: absolute; z-index: 2; top: 50%; width: 8px; height: 8px;
+  transform: translate(-50%, -50%); border-radius: 50%;
+  background: #8fc77c; box-shadow: 0 0 0 2px rgba(255, 255, 255, .65);
+  font-size: 13px; line-height: 1; text-align: center; pointer-events: none;
+}
+.growth-bud.open {
+  width: auto; height: auto; background: none; box-shadow: none;
+  animation: bud-open .6s ease;
+}
+@keyframes bud-open { from { transform: translate(-50%, -50%) scale(.2); } to { transform: translate(-50%, -50%) scale(1); } }
+.growth-flyer {
+  position: absolute; z-index: 3; left: clamp(10px, var(--p, 0%), calc(100% - 10px)); bottom: 9px;
+  font-size: 17px; line-height: 1; pointer-events: none;
+  transform: translateX(-50%); transition: left .8s ease;
+  filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .9));
+  animation: flutter 2.4s ease-in-out infinite;
+}
+@keyframes flutter {
+  0%, 100% { transform: translateX(-50%) translateY(0) scaleX(1); }
+  25% { transform: translateX(-50%) translateY(-3px) scaleX(.72); }
+  50% { transform: translateX(-50%) translateY(-1px) scaleX(1); }
+  75% { transform: translateX(-50%) translateY(-4px) scaleX(.78); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .growth-flyer, .growth-bud.open { animation: none; }
+  .growth-flyer, #growth-fill { transition: none; }
+}
+
+/* ---------- 🏡 정원으로 버튼: 크고 화사하게 (처음 화면 button, 동화 읽기 a 모두) ---------- */
+.topbar [aria-label="정원으로"] {
+  width: 56px; height: 56px; border-radius: 18px;
+  display: inline-grid; place-items: center;
+  font-size: 34px; line-height: 1;
+  border: 2px solid #9fd08b;
+  background:
+    radial-gradient(circle at 78% 22%, #fff3b0 0 7px, rgba(255, 243, 176, .55) 8px, transparent 15px), /* 해 */
+    linear-gradient(180deg, #e3f4fb 0%, #f1f9e9 58%, #bfe3a6 59%, #a7d68e 100%);                     /* 하늘 · 잔디 */
+  box-shadow: 0 3px 0 #86c06f, 0 6px 12px rgba(80, 140, 60, .22), inset 0 1px 0 rgba(255, 255, 255, .9);
+  overflow: visible;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.topbar [aria-label="정원으로"]:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #86c06f, 0 10px 16px rgba(80, 140, 60, .26), inset 0 1px 0 rgba(255, 255, 255, .9); }
+.topbar [aria-label="정원으로"]:active { transform: translateY(2px); box-shadow: 0 1px 0 #86c06f, 0 3px 6px rgba(80, 140, 60, .2); }
+@media (max-width: 420px) {
+  .topbar [aria-label="정원으로"] { width: 50px; height: 50px; font-size: 30px; border-radius: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .topbar [aria-label="정원으로"] { transition: none; }
+}
