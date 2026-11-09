@@ -6,17 +6,15 @@
 const words = [
     {
         text: "발",
-        image: "images/foot.jpg",
+        image: "../images/foot.jpg",
     },
     {
         text: "사과",
-        image: "images/apple.jpg",
-        emoji: "🍎"
+        image: "../images/apple.jpg",
     },
     {
-        text: "나무",
-        image: "images/butterfly.jpg",
-        emoji: "🌳"
+        text: "나비",
+        image: "../images/butterfly.jpg",
     }
 ];
 
@@ -51,9 +49,10 @@ function showWord() {
     wordText.textContent = word.text;
 
     // 기본적으로 이모지 표시
-    wordEmoji.textContent = word.emoji;
-    wordEmoji.hidden = false;
-    wordImage.hidden = true;
+    wordImage.alt = word.text + " 그림";
+    wordImage.src = word.image;
+    wordImage.hidden = false;
+
 
     // 이미지 파일이 있으면 이미지 표시
     wordImage.onload = function () {
@@ -67,9 +66,6 @@ function showWord() {
         wordEmoji.hidden = false;
     };
 
-    wordImage.alt = word.text + " 그림";
-    wordImage.src = word.image;
-
     // 진행 상태 업데이트
     progressText.textContent =
         (currentIndex + 1) + "/" + words.length;
@@ -77,8 +73,11 @@ function showWord() {
     progressFill.style.width =
         ((currentIndex + 1) / words.length * 100) + "%";
 
+    document.getElementById("progressBar")
+        ?.setAttribute("aria-valuenow", currentIndex + 1);
+
     // 결과 초기화
-    result.textContent = "";
+    result.textContent = "단어를 들려줘!!";
 }
 
 
@@ -146,7 +145,7 @@ function startReading() {
 
         if (normalize(spokenWord) === normalize(targetWord)) {
             result.textContent =
-                "씨앗이 단어를 기억했어요! 🌱";
+                "씨앗이 단어를 기억했어요!";
         } else {
             result.textContent =
                 "인식된 말: " + spokenWord +
