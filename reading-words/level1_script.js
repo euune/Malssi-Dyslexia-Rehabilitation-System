@@ -143,14 +143,19 @@ function startReading() {
         const normalize = (text) =>
             text.replace(/[^\p{L}\p{N}]/gu, "");
 
+        
         if (normalize(spokenWord) === normalize(targetWord)) {
-            result.textContent =
-                "씨앗이 단어를 기억했어요!";
+
+         result.textContent =
+         `“${spokenWord}”라고 들렸어! 다음 단어도 읽어볼까?`;
+
         } else {
+
             result.textContent =
-                "인식된 말: " + spokenWord +
-                " / 한 번 더 들려줄래?";
+            `“${spokenWord}”라고 들렸어. 다시 한 번 읽어볼까?`;
+
         }
+
     };
 
     // 음성 인식 오류
@@ -180,7 +185,13 @@ function startReading() {
 // 6. 다음 단어로 이동
 // ========================================
 
+
+/* ========================================
+   6. 다음 단어로 이동
+======================================== */
+
 function nextWord() {
+
     // 음성 인식 중이면 종료
     if (recognition) {
         recognition.abort();
@@ -188,15 +199,29 @@ function nextWord() {
         micBtn.disabled = false;
     }
 
-    currentIndex++;
-
-    if (currentIndex >= words.length) {
-        alert("Level 1 학습 완료!");
-        currentIndex = 0;
+    // 재생 중인 음성 종료
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
     }
 
+    // 다음 단어로 이동
+    currentIndex++;
+
+    // Level 1의 모든 단어를 학습한 경우
+    if (currentIndex >= words.length) {
+
+        alert("Level 1 학습을 마쳤어요! Level 2로 이동할게요.");
+
+        // Level 2 화면으로 이동
+        window.location.href = "./level2.html";
+
+        return;
+    }
+
+    // 다음 단어 표시
     showWord();
 }
+
 
 
 // ========================================

@@ -1,0 +1,39 @@
+
+/* ========================================
+   Level 2 전용 스타일
+   기존 Level 1 디자인 유지
+======================================== */
+
+/* 스스로 읽기와 음성 힌트 버튼 */
+.rw-controls .mic-btn,
+.rw-controls .listen-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    word-break: keep-all;
+}
+
+/* 음성 힌트 안내 문구 */
+.rw-hint-guide {
+    margin: 10px 0 0;
+    color: var(--rw-muted, #756f62);
+    font-size: 13px;
+    text-align: center;
+}
+
+/* ========================================
+   모바일 화면 대응
+======================================== */
+
+@media (max-width: 390px) {
+
+    .rw-controls {
+        flex-direction: column;
+    }
+
+    .rw-controls button {
+        width: 100%;
+    }
+
+}

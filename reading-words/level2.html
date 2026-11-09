@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>말씨 - 단어 읽기 2단계</title>
+
+    <!-- Level 1과 동일한 글꼴 및 디자인 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="level1_style.css">
+    <link rel="stylesheet" href="level2_style.css">
+</head>
+
+<body>
+
+    <!-- 상단 바 -->
+    <header class="topbar rw-topbar">
+
+        <a href="../index.html"
+           class="icon-btn rw-home"
+           aria-label="정원으로 돌아가기">
+            🏡
+        </a>
+
+        <div class="growth rw-growth">
+
+            <div class="growth-label rw-growth-label">
+                단어 읽기 · 2단계 ·
+                <span id="progressText">1/3</span>
+            </div>
+
+            <div class="growth-bar rw-progress-bar"
+                 id="progressBar"
+                 role="progressbar"
+                 aria-label="단어 학습 진행률"
+                 aria-valuemin="0"
+                 aria-valuemax="3"
+                 aria-valuenow="1">
+
+                <div id="progressFill"></div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- 메인 화면 -->
+    <main class="rw-page">
+
+        <!-- 씨앗 캐릭터와 말풍선 -->
+        <section class="rw-stage"
+                 aria-label="씨앗의 반응">
+
+            <img src="../images/seed.png"
+                 alt="씨앗 캐릭터"
+                 class="rw-seed-image">
+
+            <p id="result"
+               class="rw-bubble"
+               aria-live="polite">
+                이번엔 먼저 혼자 읽어볼까?
+            </p>
+
+        </section>
+
+        <!-- 단어 읽기 카드 -->
+        <section class="rw-card">
+
+            <h1 class="instruction">
+                그림과 단어를 보고 스스로 읽어볼까요?
+            </h1>
+
+            <!-- 단어 이미지 -->
+            <div class="image-box">
+
+                <img id="wordImage"
+                     alt="단어 그림"
+                     hidden>
+
+                <span id="wordEmoji"
+                      aria-hidden="true"
+                      hidden></span>
+
+            </div>
+
+            <!-- 단어 -->
+            <div class="word-area">
+                <h2 id="wordText">발</h2>
+            </div>
+
+            <!-- 스스로 읽기 + 선택적 음성 힌트 -->
+            <div class="rw-controls">
+
+                <button id="micBtn"
+                        type="button"
+                        class="mic-btn">
+                    🎤 내가 읽어볼게요!
+                </button>
+
+                <button id="listenBtn"
+                        type="button"
+                        class="listen-btn">
+                    🔈 힌트를 들어볼까요?
+                </button>
+
+            </div>
+
+            <p class="rw-hint-guide">
+                잘 몰라도 괜찮아요! 힌트를 눌러보세요!            </p>
+
+            <!-- 다음 단어 -->
+            <button id="nextBtn"
+                    type="button"
+                    class="next-btn">
+                다음으로 넘어가볼까요? →
+            </button>
+
+        </section>
+    </main>
+
+    <script src="level2_script.js"></script>
+
+</body>
+</html>
