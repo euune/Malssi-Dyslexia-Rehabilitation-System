@@ -13,13 +13,69 @@
   var flying = 0; // 동시에 날아가는 말 수 (차례로 출발시키기 위함)
 
   function $(id) { return document.getElementById(id); }
+     var STAGE_ICONS = ['🌰', '🌰', '🌱', '🌿', '🪴', '🌳', '🌸'];
+  var BUDS = [25, 50, 75]; // 성장 막대 위 꽃봉오리 자리(%) — 지나가면 꽃이 핌
+
+  /** 상단 바를 정원처럼 꾸밀 요소를 한 번만 덧붙임 (HTML 은 그대로 두고 여기서 추가) */
+  function decorate() {
+    var label = document.querySelector('.growth-label');
+    if (label && !$('stage-icon')) {
+      // "씨앗 · 발아" → [씨앗] [🌱 발아] 배지
+      Array.prototype.slice.call(label.childNodes).forEach(function (n) { if (n.nodeType === 3) label.removeChild(n); });
+      var stageName = $('stage-name');
+      if (stageName) {
+        var icon = document.createElement('span');
+        icon.id = 'stage-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        stageName.parentNode.insertBefore(icon, stageName);
+        var chip = document.createElement('span');
+        chip.className = 'stage-chip';
+        stageName.parentNode.insertBefore(chip, icon);
+        chip.appendChild(icon);
+        chip.appendChild(stageName);
+      }
+    }
+    var bar = document.querySelector('.growth-bar');
+    if (bar && !bar.querySelector('.growth-flyer')) {
+      BUDS.forEach(function (at) {
+        var bud = document.createElement('span');
+        bud.className = 'growth-bud';
+        bud.style.left = at + '%';
+        bud.setAttribute('aria-hidden', 'true');
+        bar.appendChild(bud);
+      });
+      var flyer = document.createElement('span');
+      flyer.className = 'growth-flyer';
+      flyer.setAttribute('aria-hidden', 'true');
+      flyer.textContent = '🦋';
+      bar.appendChild(flyer);
+    }
+  }
+
 
   /** 상단 바(이름·단계·막대)와 씨앗 모습을 저장된 경험치에 맞춤. force: 씨앗을 다시 그리기 */
   function update(force) {
-    var st = SG.store.get(), E = SG.engine, stage = E.stageOf(st.exp);
+        var st = SG.store.get(), E = SG.engine, stage = E.stageOf(st.exp);
+    decorate();
+    var pct = Math.round(E.stageProgress(st.exp) * 100);
     if ($('seed-name')) $('seed-name').textContent = st.seedName || '씨앗';
     if ($('stage-name')) $('stage-name').textContent = E.STAGES[stage];
-    if ($('growth-fill')) $('growth-fill').style.width = Math.round(E.stageProgress(st.exp) * 100) + '%';
+    if ($('stage-icon')) $('stage-icon').textContent = STAGE_ICONS[stage] || '🌱';
+    if ($('growth-fill')) $('growth-fill').style.width = pct + '%';
+    var bar = document.querySelector('.growth-bar');
+    if (bar) {
+      bar.style.setProperty('--p', pct + '%');
+      bar.setAttribute('aria-valuenow', String(pct));
+      bar.setAttribute('aria-valuemin', '0');
+      bar.setAttribute('aria-valuemax', '100');
+      Array.prototype.forEach.call(bar.querySelectorAll('.growth-bud'), function (bud, i) {
+        var open = pct >= BUDS[i];
+        if (open !== bud.classList.contains('open')) {
+          bud.classList.toggle('open', open);
+          bud.textContent = open ? '🌼' : '';
+        }
+      });
+    }
     if ($('seed') && (force || stage !== lastStage)) { SG.seed.render(stage); lastStage = stage; }
     return stage;
   }
