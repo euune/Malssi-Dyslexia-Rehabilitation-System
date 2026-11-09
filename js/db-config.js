@@ -14,7 +14,7 @@
 (function (root) {
   var SG = root.SG = root.SG || {};
   SG.DB_CONFIG = {
-    url: '',
+    url: 'https://ikzyjhkyrsydtubbcdqv.supabase.co/rest/v1/',
     anonKey: ''
   };
 })(typeof window !== 'undefined' ? window : globalThis);
