@@ -436,6 +436,7 @@
       toggle('글자 크게 보기', 'bigText', '읽을 낱말과 글자를 더 크게 보여줘요.'),
       toggle('자간 넓히기', 'wideSpacing', '글자와 글자, 낱말과 낱말 사이를 넓혀 읽기 편하게 해요. 동화 읽기에도 적용돼요.'),
       SG.db ? SG.db.settingsBlock(el) : null, // 학습 기록 저장(서버) – js/db.js
+      SG.intro ? el('div', { class: 'row' }, [SG.intro.settingsButton(el)]) : null, // 인트로 다시 보기 – js/intro.js
       el('div', { class: 'row' }, [
         el('button', { class: 'btn primary', text: '돌아가기', onclick: goHome }),
         el('button', { class: 'btn ghost small', text: '처음부터 새로 시작', onclick: function () {
