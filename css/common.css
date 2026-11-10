@@ -223,8 +223,8 @@ a.btn { display: inline-flex; align-items: center; color: inherit; text-decorati
 }
 @keyframes bud-open { from { transform: translate(-50%, -50%) scale(.2); } to { transform: translate(-50%, -50%) scale(1); } }
 .growth-flyer {
-  position: absolute; z-index: 3; left: clamp(10px, var(--p, 0%), calc(100% - 10px)); bottom: 9px;
-  font-size: 17px; line-height: 1; pointer-events: none;
+  position: absolute; z-index: 3; left: clamp(10px, var(--p, 0%), calc(100% - 10px)); bottom: -2px;
+  font-size: 16px; line-height: 1; pointer-events: none;
   transform: translateX(-50%); transition: left .8s ease;
   filter: drop-shadow(0 1px 0 rgba(255, 255, 255, .9));
   animation: flutter 2.4s ease-in-out infinite;
