@@ -20,9 +20,6 @@
   'use strict';
   SG.registerActivity({
     key: 'read-word', order: 1, icon: '📖', title: '단어 읽기', desc: '씨앗에게 낱말 소리를 들려줘요',
-    start: function () {
-      // TODO(팀원): 게임이 준비되면 아래 한 줄을 게임 시작 코드로 바꾸세요.
-      SG.core.comingSoon('단어 읽기');
-    }
+    start: function () { SG.speech.stopSpeaking(); window.location.href = 'reading-words/level1.html'; }
   });
 })();
