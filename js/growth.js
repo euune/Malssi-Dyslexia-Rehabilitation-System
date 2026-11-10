@@ -58,7 +58,7 @@
         var st = SG.store.get(), E = SG.engine, stage = E.stageOf(st.exp);
     decorate();
     var pct = Math.round(E.stageProgress(st.exp) * 100);
-    if ($('seed-name')) $('seed-name').textContent = st.seedName || '씨앗';
+    if ($('seed-name')) $('seed-name').textContent = '말씨';
     if ($('stage-name')) $('stage-name').textContent = E.STAGES[stage];
     if ($('stage-icon')) $('stage-icon').textContent = STAGE_ICONS[stage] || '🌱';
     if ($('growth-fill')) $('growth-fill').style.width = pct + '%';
