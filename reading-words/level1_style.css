@@ -1,17 +1,20 @@
 
 /* ========================================
-   1. 공통 디자인 설정
+   1. 공통 색상 및 글꼴
 ======================================== */
 
 :root {
     --rw-bg: var(--bg, #f5f3e8);
     --rw-bg2: var(--bg-2, #e4f0dc);
-    --rw-line: var(--line, #d7d6ba);
+    --rw-line: var(--line, #e5d9b9);
     --rw-card: var(--card, #fffdf5);
-    --rw-accent: var(--accent, #73a963);
-    --rw-accent-soft: var(--accent-soft, #e7f2df);
+
+    --rw-accent: var(--accent, #5b9a5f);
+    --rw-accent-soft: var(--accent-soft, #e3f0df);
+
     --rw-muted: var(--muted, #756f62);
     --rw-accent-dark: #477a3c;
+
     --rw-title-font: var(--font-title, 'Jua', sans-serif);
 }
 
@@ -29,8 +32,8 @@ body {
 
     background: linear-gradient(
         180deg,
-        var(--rw-bg),
-        var(--rw-bg2)
+        #fffaf0 0%,
+        #f4ecd5 100%
     );
 
     color: #3f4335;
@@ -43,17 +46,18 @@ button {
 }
 
 button:disabled {
-    opacity: .55;
+    opacity: 0.55;
     cursor: default;
 }
 
 button:active:not(:disabled) {
-    transform: scale(.98);
+    transform: scale(0.98);
 }
 
 
 /* ========================================
-   2. 상단 바
+   2. 기본 상단 바
+   Level 2, 3에서도 재사용 가능
 ======================================== */
 
 .rw-topbar {
@@ -72,8 +76,7 @@ button:active:not(:disabled) {
     border-bottom: 2px solid var(--rw-line);
 }
 
-/* 홈 버튼 */
-
+/* 기본 홈 버튼 */
 .rw-home {
     display: grid;
     place-items: center;
@@ -85,14 +88,12 @@ button:active:not(:disabled) {
     border: 2px solid var(--rw-line);
     border-radius: 13px;
 
-    background: #fff;
+    background: #ffffff;
     color: inherit;
 
     font-size: 21px;
     text-decoration: none;
 }
-
-/* 진행률 영역 */
 
 .rw-growth {
     flex: 1;
@@ -106,6 +107,8 @@ button:active:not(:disabled) {
 }
 
 .rw-progress-bar {
+    position: relative;
+
     height: 13px;
     overflow: hidden;
 
@@ -116,18 +119,335 @@ button:active:not(:disabled) {
 }
 
 #progressFill {
-    height: 100%;
     width: 33.333%;
+    height: 100%;
 
     border-radius: inherit;
     background: var(--rw-accent);
 
-    transition: width .25s ease;
+    transition: width 0.35s ease;
 }
 
 
 /* ========================================
-   3. 메인 화면
+   3. 말씨 정원 상단 바
+======================================== */
+
+.rw-topbar.garden-topbar {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+
+    width: 100%;
+    min-height: 103px;
+
+    padding: 16px 20px 8px;
+
+    background: linear-gradient(
+        110deg,
+        #e7f5f4 0%,
+        #f1faf7 100%
+    );
+
+    border-bottom: 0;
+}
+
+
+/* ========================================
+   4. 정원 홈 버튼
+======================================== */
+
+.garden-topbar .garden-home {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+
+    width: 80px;
+    height: 80px;
+
+    border: 3px solid #91c77f;
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 74% 22%,
+            #fff6ad 0 12px,
+            transparent 13px
+        ),
+        linear-gradient(
+            180deg,
+            #f5fff2,
+            #a9db91
+        );
+
+    font-size: 40px;
+    text-decoration: none;
+
+    box-shadow:
+        0 5px 0 #7eb96c,
+        0 7px 14px rgba(70, 110, 60, 0.14);
+
+    transition: transform 0.2s ease;
+}
+
+.garden-topbar .garden-home:hover {
+    transform: translateY(-2px);
+}
+
+
+/* ========================================
+   5. 말씨 로고 및 씨앗 성장 단계
+======================================== */
+
+.garden-topbar .garden-growth {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 8px;
+    padding-top: 2px;
+}
+
+/* 로고와 성장 단계 가로 정렬 */
+.garden-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    min-height: 35px;
+}
+
+/* 말씨 로고 */
+.garden-logo {
+    font-family: 'Jua', sans-serif;
+    font-size: 29px;
+    line-height: 1;
+
+    color: #623a25;
+    white-space: nowrap;
+}
+
+/* 아기 씨앗 표시 */
+.garden-stage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    padding: 4px 12px;
+
+    background: #ffffff;
+
+    border: 1px solid #b4dca5;
+    border-radius: 30px;
+
+    font-family: 'Jua', sans-serif;
+    font-size: 18px;
+    line-height: 1.4;
+
+    color: #427d45;
+    white-space: nowrap;
+}
+
+/* 학습 진행률 텍스트
+   JS에서는 사용하지만 화면에는 숨김 */
+.garden-progress-text {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+    clip-path: inset(50%);
+
+    white-space: nowrap;
+}
+
+
+/* ========================================
+   6. 나무 모양 성장 진행 바
+======================================== */
+
+.garden-topbar .garden-track {
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    height: 21px;
+
+    overflow: visible;
+
+    border: 2px solid #b68b60;
+    border-radius: 30px;
+
+    background:
+        radial-gradient(
+            circle at 7px 8px,
+            rgba(100, 66, 36, 0.24) 0 1.3px,
+            transparent 1.8px
+        ) 0 0 / 16px 16px,
+
+        linear-gradient(
+            180deg,
+            #cfa776 0%,
+            #b78959 100%
+        );
+
+    box-shadow:
+        inset 0 2px 4px rgba(83, 55, 28, 0.24),
+        0 1px 3px rgba(83, 55, 28, 0.10);
+}
+
+/* 단어 진행률 표시 */
+.garden-topbar #progressFill {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 33.333%;
+    height: 100%;
+
+    border-radius: 30px;
+
+    background: rgba(105, 75, 42, 0.18);
+
+    transition: width 0.35s ease;
+}
+
+
+/* ========================================
+   7. 움직이는 나비
+======================================== */
+
+.garden-butterfly {
+    position: absolute;
+
+    top: 50%;
+    left: 5%;
+
+    z-index: 3;
+
+    font-size: 22px;
+    line-height: 1;
+
+    transform: translate(-50%, -50%);
+
+    transition: left 0.45s ease;
+
+    pointer-events: none;
+}
+
+
+/* ========================================
+   8. 성장 지점
+======================================== */
+
+.garden-point {
+    position: absolute;
+    top: 50%;
+
+    width: 18px;
+    height: 18px;
+
+    border: 3px solid #f9f4d9;
+    border-radius: 50%;
+
+    background: #9bcf91;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 2;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+}
+
+.point-1 {
+    left: 25%;
+}
+
+.point-2 {
+    left: 50%;
+}
+
+.point-3 {
+    left: 75%;
+}
+
+
+/* ========================================
+   9. 상단 바 아래 잔디
+======================================== */
+
+.garden-grass {
+    position: relative;
+
+    width: 100%;
+    height: 20px;
+
+    background:
+        radial-gradient(
+            circle at 8% 35%,
+            #f89cba 0 3px,
+            transparent 4px
+        ),
+
+        radial-gradient(
+            circle at 27% 25%,
+            #ffe18b 0 3px,
+            transparent 4px
+        ),
+
+        radial-gradient(
+            circle at 49% 40%,
+            #f69ab7 0 3px,
+            transparent 4px
+        ),
+
+        radial-gradient(
+            circle at 73% 25%,
+            #fff0a2 0 3px,
+            transparent 4px
+        ),
+
+        radial-gradient(
+            circle at 91% 35%,
+            #f69ab7 0 3px,
+            transparent 4px
+        ),
+
+        repeating-linear-gradient(
+            77deg,
+            transparent 0 6px,
+            #79bf6c 7px 9px,
+            transparent 10px 15px
+        ),
+
+        repeating-linear-gradient(
+            103deg,
+            transparent 0 6px,
+            #a5d98b 7px 9px,
+            transparent 10px 15px
+        ),
+
+        linear-gradient(
+            180deg,
+            #d7eec3,
+            #a2d38b
+        );
+
+    box-shadow:
+        0 3px 8px rgba(80, 100, 50, 0.09);
+}
+
+
+/* ========================================
+   10. 메인 학습 화면
 ======================================== */
 
 .rw-page {
@@ -140,7 +460,7 @@ button:active:not(:disabled) {
 
 
 /* ========================================
-   4. 씨앗 대화 영역
+   11. 씨앗 캐릭터와 말풍선
 ======================================== */
 
 .rw-stage {
@@ -148,8 +468,8 @@ button:active:not(:disabled) {
     align-items: center;
     gap: 15px;
 
-    padding: 18px 16px;
     min-height: 135px;
+    padding: 18px 16px;
 
     border: 2px solid var(--rw-line);
     border-bottom: 1px dashed var(--rw-line);
@@ -158,49 +478,67 @@ button:active:not(:disabled) {
     background: var(--rw-card);
 }
 
-/* 씨앗 말풍선 */
+/* 씨앗 이미지 */
+.rw-seed-image {
+    width: 110px;
+    height: 135px;
 
+    object-fit: contain;
+    flex-shrink: 0;
+
+    border-radius: 12px;
+}
+
+/* 말풍선 */
 .rw-bubble {
     position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     flex: 1;
+    min-height: 65px;
 
     margin: 0;
-    min-height: 56px;
+    padding: 15px;
 
-    padding: 14px 15px;
-
-    border: 2px solid var(--rw-line);
+    border: 2px solid #e5d7b4;
     border-radius: 16px;
 
-    background: #fff;
-    color: #555442;
+    background: #ffffff;
+    color: #4c513a;
 
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+
     word-break: keep-all;
 }
 
 /* 말풍선 꼬리 */
-
 .rw-bubble::before {
     content: '';
 
     position: absolute;
+
     top: 23px;
     left: -9px;
 
     width: 13px;
     height: 13px;
 
-    border-bottom: 2px solid var(--rw-line);
-    border-left: 2px solid var(--rw-line);
+    border-bottom: 2px solid #e5d7b4;
+    border-left: 2px solid #e5d7b4;
 
-    background: #fff;
+    background: #ffffff;
+
     transform: rotate(45deg);
 }
 
 
 /* ========================================
-   5. 학습 카드
+   12. 단어 읽기 카드
 ======================================== */
 
 .rw-card {
@@ -212,20 +550,14 @@ button:active:not(:disabled) {
 
     background: var(--rw-card);
 
-    box-shadow: 0 8px 22px rgba(80, 70, 40, .07);
+    box-shadow:
+        0 8px 22px rgba(80, 70, 40, 0.07);
 }
 
-.rw-label {
-    margin: 0 0 8px;
-
-    color: var(--rw-muted);
-    font-size: 14px;
-}
-
-/* 문제 설명 */
-
+/* 문제 안내 문구 */
 .instruction {
     margin: 0 0 14px;
+
     text-align: center;
 
     font-family: var(--rw-title-font);
@@ -233,11 +565,12 @@ button:active:not(:disabled) {
     font-weight: 400;
 
     line-height: 1.4;
+    word-break: keep-all;
 }
 
 
 /* ========================================
-   6. 단어 이미지
+   13. 단어 이미지 영역
 ======================================== */
 
 .image-box {
@@ -257,6 +590,7 @@ button:active:not(:disabled) {
     background: #fffaf0;
 }
 
+/* 단어 이미지 */
 #wordImage {
     display: block;
 
@@ -266,11 +600,13 @@ button:active:not(:disabled) {
     object-fit: contain;
 }
 
+/* 숨김 처리 */
 #wordImage[hidden],
 #wordEmoji[hidden] {
     display: none;
 }
 
+/* 이미지가 없을 때 이모지 */
 #wordEmoji {
     font-size: 110px;
     line-height: 1;
@@ -278,7 +614,7 @@ button:active:not(:disabled) {
 
 
 /* ========================================
-   7. 단어 텍스트
+   14. 단어 텍스트
 ======================================== */
 
 .word-area {
@@ -299,7 +635,7 @@ button:active:not(:disabled) {
 
 
 /* ========================================
-   8. 학습 버튼
+   15. 음성 버튼 공통
 ======================================== */
 
 .rw-controls {
@@ -309,36 +645,45 @@ button:active:not(:disabled) {
 
 .rw-controls button {
     flex: 1;
+
+    min-width: 0;
     min-height: 53px;
 
     padding: 11px 8px;
     border-radius: 14px;
+
+    word-break: keep-all;
+    text-align: center;
 }
 
-/* 듣기 버튼 */
-
+/* 음성 듣기 버튼 */
 .listen-btn {
     border: 2px solid var(--rw-line);
-    background: #fff;
 
+    background: #ffffff;
     color: #464c3e;
+
     font-size: 16px;
 }
 
-/* 읽어 주기 버튼 */
-
+/* 마이크 버튼 */
 .mic-btn {
     border: 0;
-    background: var(--rw-accent);
 
-    color: #fff;
+    background: var(--rw-accent);
+    color: #ffffff;
+
     font-size: 17px;
     font-weight: 700;
 
-    box-shadow: 0 4px 0 var(--rw-accent-dark);
+    box-shadow:
+        0 4px 0 var(--rw-accent-dark);
 }
 
-/* 다음 단어 버튼 */
+
+/* ========================================
+   16. 다음 단어 버튼
+======================================== */
 
 .next-btn {
     width: 100%;
@@ -355,140 +700,64 @@ button:active:not(:disabled) {
     font-weight: 700;
 }
 
-
-/* ========================================
-   9. 씨앗 캐릭터
-======================================== */
-
-.rw-seed {
-    position: relative;
-    flex: 0 0 74px;
-
-    width: 74px;
-    height: 96px;
-}
-
-/* 씨앗 몸통 */
-
-.rw-seed-body {
-    position: absolute;
-
-    bottom: 0;
-    left: 10px;
-
-    width: 54px;
-    height: 64px;
-
-    background: #f5bd73;
-    border: 3px solid #c48d48;
-    border-radius: 45% 45% 50% 50%;
-
-    z-index: 2;
-}
-
-/* 눈 */
-
-.rw-eyes {
-    position: absolute;
-
-    top: 25px;
-    left: 12px;
-
-    display: flex;
-    gap: 15px;
-}
-
-.rw-eyes span {
-    width: 5px;
-    height: 7px;
-
-    border-radius: 50%;
-    background: #49342b;
-}
-
-/* 볼 */
-
-.rw-cheeks {
-    position: absolute;
-
-    top: 35px;
-    left: 7px;
-
-    display: flex;
-    gap: 26px;
-}
-
-.rw-cheeks span {
-    width: 11px;
-    height: 7px;
-
-    background: #ef9292;
-    border-radius: 50%;
-}
-
-/* 입 */
-
-.rw-mouth {
-    position: absolute;
-
-    top: 40px;
-    left: 22px;
-
-    width: 11px;
-    height: 6px;
-
-    border-bottom: 2px solid #49342b;
-    border-radius: 50%;
-}
-
-/* 줄기 */
-
-.rw-stem {
-    position: absolute;
-
-    top: 11px;
-    left: 36px;
-
-    width: 5px;
-    height: 30px;
-
-    background: #68ab62;
-    transform: rotate(-8deg);
-}
-
-/* 잎 */
-
-.rw-leaf {
-    position: absolute;
-
-    width: 26px;
-    height: 15px;
-
-    border: 2px solid #55944b;
-    border-radius: 80% 0 80% 0;
-
-    background: #8cce74;
-}
-
-.rw-leaf-left {
-    top: 5px;
-    left: 13px;
-
-    transform: rotate(35deg);
-}
-
-.rw-leaf-right {
-    top: 2px;
-    left: 38px;
-
-    transform: rotate(-35deg);
+.next-btn:hover:not(:disabled) {
+    filter: brightness(0.98);
 }
 
 
 /* ========================================
-   10. 작은 화면 대응
+   17. 태블릿 및 모바일 화면 대응
 ======================================== */
 
+@media (max-width: 480px) {
+
+    .rw-topbar.garden-topbar {
+        min-height: 83px;
+        gap: 10px;
+        padding: 12px 12px 8px;
+    }
+
+    .garden-topbar .garden-home {
+        width: 58px;
+        height: 58px;
+
+        font-size: 31px;
+        border-radius: 18px;
+    }
+
+    .garden-title-row {
+        gap: 8px;
+        min-height: 29px;
+    }
+
+    .garden-logo {
+        font-size: 23px;
+    }
+
+    .garden-stage {
+        padding: 3px 8px;
+        font-size: 15px;
+    }
+
+    .garden-topbar .garden-track {
+        height: 17px;
+    }
+
+    .garden-point {
+        width: 15px;
+        height: 15px;
+    }
+
+    .garden-butterfly {
+        font-size: 19px;
+    }
+
+    .garden-grass {
+        height: 16px;
+    }
+}
+
+/* 작은 모바일 화면 */
 @media (max-width: 360px) {
 
     .rw-page {
@@ -501,75 +770,6 @@ button:active:not(:disabled) {
         gap: 9px;
     }
 
-    .rw-card {
-        padding: 15px 12px 20px;
-    }
-
-    .rw-bubble {
-        font-size: 14px;
-        padding: 12px 10px;
-    }
-
-    .image-box {
-        height: 190px;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        transition: none !important;
-    }
-}
-
-/* ========================================
-   씨앗 이미지 디자인
-======================================== */
-
-.rw-stage {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-/* 첫 번째 사진의 씨앗 */
-.rw-seed-image {
-    width: 110px;
-    height: 135px;
-
-    object-fit: contain;
-    flex-shrink: 0;
-
-    border-radius: 12px;
-}
-
-/* 씨앗 옆 말풍선 */
-.rw-bubble {
-    flex: 1;
-
-    min-height: 65px;
-    padding: 15px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: #ffffff;
-
-    border: 2px solid #e5d7b4;
-    border-radius: 16px;
-
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-
-    color: #4c513a;
-    word-break: keep-all;
-}
-
-/* 모바일 화면 대응 */
-@media (max-width: 360px) {
     .rw-seed-image {
         width: 85px;
         height: 110px;
@@ -578,5 +778,237 @@ button:active:not(:disabled) {
     .rw-bubble {
         font-size: 14px;
         padding: 10px;
+    }
+
+    .rw-card {
+        padding: 15px 12px 20px;
+    }
+
+    .image-box {
+        height: 190px;
+    }
+
+    .rw-controls {
+        flex-direction: column;
+    }
+
+    .rw-controls button {
+        width: 100%;
+    }
+}
+
+/* 애니메이션 감소 설정 대응 */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ========================================
+   상단 바 크기 축소 및 고정
+======================================== */
+
+/* 상단 바와 잔디를 하나로 묶어 고정 */
+.garden-header-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+}
+
+/* ========================================
+   1. 상단 바 높이 축소
+======================================== */
+
+.garden-header-wrap .garden-topbar {
+    position: relative;
+    top: auto;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: 72px;
+    min-height: 0;
+
+    padding: 7px 18px;
+    gap: 12px;
+
+    background: linear-gradient(
+        110deg,
+        #e7f5f4 0%,
+        #f1faf7 100%
+    );
+
+    border-bottom: 0;
+}
+
+/* ========================================
+   2. 정원 홈 버튼 축소
+======================================== */
+
+.garden-header-wrap .garden-home {
+    width: 54px;
+    height: 54px;
+
+    flex-shrink: 0;
+
+    border: 2px solid #91c77f;
+    border-radius: 17px;
+
+    font-size: 29px;
+
+    box-shadow:
+        0 3px 0 #7eb96c,
+        0 4px 9px rgba(70, 110, 60, 0.12);
+}
+
+/* ========================================
+   3. 로고와 성장 단계 축소
+======================================== */
+
+.garden-header-wrap .garden-growth {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 5px;
+    padding-top: 0;
+
+    min-width: 0;
+}
+
+.garden-header-wrap .garden-title-row {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+    min-height: 26px;
+}
+
+/* 말씨 로고 */
+.garden-header-wrap .garden-logo {
+    font-size: 25px;
+    line-height: 1;
+}
+
+/* 아기 씨앗 */
+.garden-header-wrap .garden-stage {
+    padding: 2px 10px;
+
+    font-size: 15px;
+    line-height: 1.4;
+
+    border-radius: 20px;
+}
+
+/* ========================================
+   4. 나무색 진행 바 축소
+======================================== */
+
+.garden-header-wrap .garden-track {
+    width: 100%;
+    height: 15px;
+
+    border-width: 1px;
+    border-radius: 20px;
+}
+
+/* 진행 표시 */
+.garden-header-wrap #progressFill {
+    height: 100%;
+    border-radius: inherit;
+}
+
+/* 나비 축소 */
+.garden-header-wrap .garden-butterfly {
+    font-size: 18px;
+}
+
+/* 성장 지점 축소 */
+.garden-header-wrap .garden-point {
+    width: 14px;
+    height: 14px;
+
+    border-width: 2px;
+}
+
+/* ========================================
+   5. 잔디 크기 축소 및 고정
+======================================== */
+
+.garden-header-wrap .garden-grass {
+    position: relative;
+
+    width: 100%;
+    height: 12px;
+
+    margin: 0;
+    padding: 0;
+
+    box-shadow:
+        0 3px 6px rgba(80, 100, 50, 0.08);
+}
+
+/* ========================================
+   6. 모바일 화면
+======================================== */
+
+@media (max-width: 480px) {
+
+    .garden-header-wrap .garden-topbar {
+        height: 64px;
+        min-height: 0;
+
+        padding: 6px 10px;
+        gap: 9px;
+    }
+
+    .garden-header-wrap .garden-home {
+        width: 46px;
+        height: 46px;
+
+        font-size: 25px;
+        border-radius: 14px;
+    }
+
+    .garden-header-wrap .garden-growth {
+        gap: 4px;
+    }
+
+    .garden-header-wrap .garden-title-row {
+        gap: 7px;
+        min-height: 24px;
+    }
+
+    .garden-header-wrap .garden-logo {
+        font-size: 21px;
+    }
+
+    .garden-header-wrap .garden-stage {
+        font-size: 13px;
+        padding: 2px 7px;
+    }
+
+    .garden-header-wrap .garden-track {
+        height: 13px;
+    }
+
+    .garden-header-wrap .garden-point {
+        width: 12px;
+        height: 12px;
+    }
+
+    .garden-header-wrap .garden-butterfly {
+        font-size: 16px;
+    }
+
+    .garden-header-wrap .garden-grass {
+        height: 10px;
     }
 }

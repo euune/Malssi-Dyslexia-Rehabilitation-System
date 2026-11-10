@@ -1,45 +1,86 @@
 
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-    <title>말씨 - 단어 읽기 훈련</title>
+    <title>말씨 - 단어 읽기 1단계</title>
 
-    <!-- 글꼴 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
 
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap"
-          rel="stylesheet">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap"
+        rel="stylesheet"
+    >
 
     <!-- 공통 디자인 -->
-    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet"
+          href="../css/common.css">
 
-    <!-- 단어 읽기 디자인 -->
-    <link rel="stylesheet" href="level1_style.css">
+    <!-- Level 1 디자인 -->
+    <link rel="stylesheet"
+          href="level1_style.css">
+
 </head>
 
 <body>
 
-    <!-- 상단 바 -->
-    <header class="topbar rw-topbar">
+    <!-- ====================================
+         1. 말씨 정원 상단 바
+    ===================================== -->
 
+
+<!-- ====================================
+     말씨 정원 상단 바 + 잔디
+     스크롤 시 함께 상단 고정
+===================================== -->
+
+<div class="garden-header-wrap">
+
+    <!-- 상단 바 -->
+    <header class="topbar rw-topbar garden-topbar">
+
+        <!-- 정원으로 돌아가기 -->
         <a href="../index.html"
-           class="icon-btn rw-home"
-           aria-label="정원으로">
+           class="icon-btn rw-home garden-home"
+           aria-label="정원으로 돌아가기">
             🏡
         </a>
 
-        <div class="growth rw-growth">
+        <!-- 말씨 로고 및 성장 정보 -->
+        <div class="growth rw-growth garden-growth">
 
-            <div class="growth-label rw-growth-label">
-                단어 읽기 · 1단계 ·
-                <span id="progressText">1/3</span>
+            <div class="garden-title-row">
+
+                <!-- 말씨 로고 -->
+                <span class="garden-logo">
+                    말씨
+                </span>
+
+                <!-- 씨앗 성장 단계 -->
+                <span class="garden-stage">
+                    🌰 아기 씨앗
+                </span>
+
+                <!-- 학습 진행률 -->
+                <span id="progressText"
+                      class="garden-progress-text">
+                    1/3
+                </span>
+
             </div>
 
-            <div class="growth-bar rw-progress-bar"
+            <!-- 성장 진행 바 -->
+            <div class="growth-bar rw-progress-bar garden-track"
                  id="progressBar"
                  role="progressbar"
                  aria-label="단어 학습 진행률"
@@ -47,91 +88,162 @@
                  aria-valuemax="3"
                  aria-valuenow="1">
 
+                <!-- 진행률 -->
                 <div id="progressFill"></div>
 
+                <!-- 나비 -->
+                <span id="gardenButterfly"
+                      class="garden-butterfly"
+                      aria-hidden="true">
+                    🦋
+                </span>
+
+                <!-- 성장 지점 -->
+                <span class="garden-point point-1"></span>
+                <span class="garden-point point-2"></span>
+                <span class="garden-point point-3"></span>
+
             </div>
+
         </div>
+
     </header>
 
+    <!-- 상단 바와 함께 고정되는 잔디 -->
+    <div class="garden-grass"
+         aria-hidden="true">
+    </div>
 
-    <!-- 메인 화면 -->
+</div>
+
+<!-- ====================================
+     기존 메인 학습 화면
+===================================== -->
+
+<!-- 아래부터 기존 <main class="rw-page"> 유지 -->
+
+
+
+    <!-- ====================================
+         2. 메인 학습 화면
+    ===================================== -->
+
     <main class="rw-page">
 
-<!-- 씨앗 캐릭터와 말풍선 -->
-<section class="rw-stage" aria-label="씨앗의 반응">
+        <!-- 씨앗 캐릭터와 말풍선 -->
+        <section class="rw-stage"
+                 aria-label="씨앗의 반응">
 
-    <!-- 씨앗 이미지 -->
-    <img
-        src="../images/seed.png"
-        alt="꽃이 피어난 씨앗 캐릭터"
-        class="rw-seed-image"
-    >
+            <!-- 씨앗 캐릭터 이미지 -->
+            <img
+                src="../images/seed.png"
+                alt="꽃이 피어난 씨앗 캐릭터"
+                class="rw-seed-image"
+            >
 
-    <!-- 씨앗 말풍선 -->
-    <p id="result"
-       class="rw-bubble"
-       aria-live="polite">
-        단어를 읽어서 가르쳐줘!
-    </p>
+            <!-- 씨앗 말풍선 -->
+            <p id="result"
+               class="rw-bubble"
+               aria-live="polite">
 
-</section>
+                단어를 들려줘!!
+
+            </p>
+
+        </section>
 
 
-        <!-- 단어 읽기 카드 -->
+        <!-- ====================================
+             3. 단어 읽기 카드
+        ===================================== -->
+
         <section class="rw-card">
 
+            <!-- 학습 안내 -->
             <h1 class="instruction">
                 씨앗에게 단어를 읽어서 가르쳐주세요!
             </h1>
 
-            <!-- 단어 이미지 -->
+
+            <!-- 단어 그림 -->
             <div class="image-box">
 
-                <img id="wordImage"
-                     alt="단어 그림"
-                     hidden>
+                <img
+                    id="wordImage"
+                    alt="단어 그림"
+                    hidden
+                >
 
-                <span id="wordEmoji"></span>
+                <!-- 이미지가 없을 때 표시 -->
+                <span id="wordEmoji"
+                      aria-hidden="true"
+                      hidden>
+                </span>
 
             </div>
 
 
-            <!-- 단어 -->
+            <!-- 학습 단어 -->
             <div class="word-area">
-                <h2 id="wordText">발</h2>
+
+                <h2 id="wordText">
+                    발
+                </h2>
+
             </div>
 
 
-            <!-- 음성 버튼 -->
+            <!-- ====================================
+                 4. 음성 학습 버튼
+            ===================================== -->
+
             <div class="rw-controls">
 
-                <button id="listenBtn"
-                        type="button"
-                        class="listen-btn">
+                <!-- 음성 듣기 -->
+                <button
+                    id="listenBtn"
+                    type="button"
+                    class="listen-btn">
+
                     🔈 같이 들어볼까요?
+
                 </button>
 
-                <button id="micBtn"
-                        type="button"
-                        class="mic-btn">
+                <!-- 직접 읽기 -->
+                <button
+                    id="micBtn"
+                    type="button"
+                    class="mic-btn">
+
                     🎤 한 번 읽어볼까요?
+
                 </button>
 
             </div>
 
 
-            <!-- 다음 단어 -->
-            <button id="nextBtn"
-                    type="button"
-                    class="next-btn">
+            <!-- ====================================
+                 5. 다음 단어 버튼
+            ===================================== -->
+
+            <button
+                id="nextBtn"
+                type="button"
+                class="next-btn">
+
                 다음으로 넘어가볼까요? →
+
             </button>
 
         </section>
 
     </main>
 
-    <!-- JavaScript 연결 -->
+
+    <!-- ====================================
+         6. JavaScript 연결
+    ===================================== -->
+
     <script src="level1_script.js"></script>
 
 </body>
