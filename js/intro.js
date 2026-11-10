@@ -48,7 +48,7 @@
         '</video>' +
       '</div>' +
       '<button class="btn primary intro-play" type="button">▶ 시작하기</button>' +
-      '<button class="btn ghost small intro-skip" type="button">건너뛰기 ⏭</button>';
+      '<button class="btn ghost small intro-skip" type="button">건너뛰기 ▶\uFE0E</button>';
     document.body.appendChild(box);
 
     var video = box.querySelector('video');
