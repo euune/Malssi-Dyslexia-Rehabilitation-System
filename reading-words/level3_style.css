@@ -1,0 +1,67 @@
+
+/* ========================================
+   Level 3 전용 스타일
+   Level 1 + Level 2 디자인 재사용
+======================================== */
+
+/* 단어를 화면 중앙에서 강조 */
+.rw-card .word-area {
+    min-height: 110px;
+    margin: 12px 0 18px;
+}
+
+.rw-card .word-area h2 {
+    font-size: clamp(39px, 8vw, 46px);
+    text-align: center;
+    overflow-wrap: anywhere;
+}
+
+/* 그림 확인 버튼 */
+.rw-controls .reveal-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    word-break: keep-all;
+}
+
+/* 그림 공개 전에는 이미지 영역 숨김 */
+.meaning-panel[hidden],
+#wordImage[hidden],
+#wordEmoji[hidden] {
+    display: none !important;
+}
+
+.meaning-panel {
+    padding-top: 10px;
+}
+
+.meaning-panel .image-box {
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+/* 그림 아래 안내 문구 */
+.meaning-text {
+    margin: 0;
+    color: var(--rw-muted, #756f62);
+    font-size: 15px;
+    text-align: center;
+}
+
+/* 그림 확인 후 다음 버튼 활성화 */
+.next-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* 모바일 화면 대응 */
+@media (max-width: 390px) {
+    .rw-controls {
+        flex-direction: column;
+    }
+
+    .rw-controls button {
+        width: 100%;
+    }
+}

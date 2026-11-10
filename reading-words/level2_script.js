@@ -145,7 +145,7 @@ function showWord() {
     // 마지막 단어에서 버튼 문구 변경
     nextBtn.textContent =
         currentIndex === words.length - 1
-            ? "학습 마치기 ✓"
+            ? "단어를 모두 획득했어! ✓"
             : "다음으로 넘어가볼까요? →";
 }
 
@@ -260,7 +260,7 @@ function startReading() {
 
     // 마이크 시작 상태
     result.textContent =
-        "읽는 소리를 듣고 있어요!";
+        "너의 소리를 듣고 있어!";
 
     micBtn.disabled = true;
     listenBtn.disabled = true;
@@ -397,21 +397,24 @@ function nextWord() {
 
     listenBtn.disabled = false;
 
-    // 다음 단어
+    // 다음 단어로 이동
     currentIndex++;
 
-
-    // 모든 단어를 학습한 경우
+    // Level 2의 모든 단어를 학습한 경우
     if (currentIndex >= words.length) {
 
-        alert("Level 2 단어 읽기 학습을 마쳤어요!");
+        alert("2단계 단어를 씨앗이 다 배웠어! 3단계 단어도 알려줘!");
 
-        // Level 1처럼 처음으로 돌아가기
-        currentIndex = 0;
+        // Level 3 화면으로 이동
+        window.location.href = "./level3.html";
+
+        return;
     }
 
+    // 다음 단어 표시
     showWord();
 }
+
 
 
 // ========================================

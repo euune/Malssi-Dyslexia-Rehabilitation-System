@@ -210,7 +210,7 @@ function nextWord() {
     // Level 1의 모든 단어를 학습한 경우
     if (currentIndex >= words.length) {
 
-        alert("Level 1 학습을 마쳤어요! Level 2로 이동할게요.");
+        alert("1단계 단어를 씨앗이 다 배웠어! 2단계 단어도 알려줘!");
 
         // Level 2 화면으로 이동
         window.location.href = "./level2.html";

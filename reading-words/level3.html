@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>말씨 - 단어 읽기 3단계</title>
+
+    <!-- Level 2와 동일한 글꼴 및 디자인 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="level1_style.css">
+    <link rel="stylesheet" href="level2_style.css">
+    <link rel="stylesheet" href="level3_style.css">
+</head>
+<body>
+    <!-- 상단 진행률 -->
+    <header class="topbar rw-topbar">
+        <a href="../index.html"
+           class="icon-btn rw-home"
+           aria-label="정원으로 돌아가기">🏡</a>
+
+        <div class="growth rw-growth">
+            <div class="growth-label rw-growth-label">
+                단어 읽기 · 3단계 · <span id="progressText">1/3</span>
+            </div>
+            <div class="growth-bar rw-progress-bar"
+                 id="progressBar"
+                 role="progressbar"
+                 aria-label="단어 학습 진행률"
+                 aria-valuemin="0"
+                 aria-valuemax="3"
+                 aria-valuenow="1">
+                <div id="progressFill"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="rw-page">
+        <!-- 씨앗 캐릭터 및 말풍선 -->
+        <section class="rw-stage" aria-label="씨앗의 반응">
+            <img src="../images/seed.png"
+                 alt="씨앗 캐릭터"
+                 class="rw-seed-image">
+            <p id="result" class="rw-bubble" aria-live="polite">
+                이번엔 그림 없이 혼자 읽어볼까?
+            </p>
+        </section>
+
+        <!-- 단어 읽기 카드 -->
+        <section class="rw-card">
+            <h1 class="instruction">
+                단어를 먼저 소리 내어 읽어볼까요?
+            </h1>
+
+            <!-- 처음에는 단어만 보여 줍니다. -->
+            <div class="word-area">
+                <h2 id="wordText">야구공</h2>
+            </div>
+
+            <!-- 마이크는 선택 사항입니다. -->
+            <div class="rw-controls">
+                <button id="micBtn" type="button" class="mic-btn">
+                    🎤 내가 읽어볼게요!
+                </button>
+                <button id="revealBtn" type="button"
+                        class="listen-btn reveal-btn">
+                    🖼️ 그림으로 뜻 확인하기
+                </button>
+            </div>
+
+            <p class="rw-hint-guide" id="guideText">
+                혼자 읽은 뒤 그림 확인 버튼을 눌러 뜻을 확인해 보세요.
+            </p>
+
+            <!-- 확인 버튼을 누르기 전에는 그림 숨김 -->
+            <div id="meaningPanel" class="meaning-panel" hidden>
+                <div class="image-box">
+                    <img id="wordImage" alt="단어 그림" hidden>
+                    <span id="wordEmoji"
+                          aria-hidden="true" hidden></span>
+                </div>
+                <p id="meaningText" class="meaning-text"></p>
+            </div>
+
+            <!-- 그림 확인 후 활성화 -->
+            <button id="nextBtn"
+                    type="button"
+                    class="next-btn"
+                    disabled>
+                다음으로 넘어가볼까요? →
+            </button>
+        </section>
+    </main>
+
+    <script src="level3_script.js"></script>
+</body>
+</html>
