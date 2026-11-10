@@ -1,17 +1,5 @@
 /* 처음 화면(단어 읽기·쓰기, 문장 쓰기) 전용 스타일. 공통 부분은 common.css */
 body { display: flex; flex-direction: column; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #1f2420; --bg-2: #262d27; --card: #2b322c; --ink: #f1ecdf; --muted: #b8b09c; --line: #3d463e;
-    --accent: #79b97c; --accent-ink: #14200f; --accent-soft: #2f4430; --emph: #8cbcf0; --emph-soft: #22364a;
-    --sky: #23343a; --soil: #6e5537;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #1f2420; --bg-2: #262d27; --card: #2b322c; --ink: #f1ecdf; --muted: #b8b09c; --line: #3d463e;
-  --accent: #79b97c; --accent-ink: #14200f; --accent-soft: #2f4430; --emph: #8cbcf0; --emph-soft: #22364a;
-  --sky: #23343a; --soil: #6e5537;
-}
 
 .muted { color: var(--muted); font-size: .9em; }
 
