@@ -1,0 +1,91 @@
+
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>말씨 · 읽기 – 단어 단계 선택</title>
+
+  <meta name="description"
+        content="말씨 단어 읽기 1·2·3단계 중 원하는 단계를 선택하는 화면">
+
+  <!-- 글꼴 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap"
+    rel="stylesheet">
+
+  <!-- 기존 말씨 프로젝트 공통 CSS -->
+  <link rel="stylesheet" href="../css/common.css">
+
+  <!-- 단계 선택 화면 CSS -->
+  <link rel="stylesheet" href="./select-level.css">
+</head>
+
+<body>
+
+  
+<!-- ========================================
+     말씨 공통 상단 바
+     Level 1과 동일한 HTML 구조
+======================================== -->
+
+<header class="topbar">
+
+    <!-- 정원으로 돌아가기 -->
+    <a class="icon-btn"
+       href="../index.html"
+       aria-label="정원으로">
+        🏡
+    </a>
+
+    <!-- 씨앗 성장 정보 -->
+    <div class="growth">
+
+        <div class="growth-label">
+
+            <span id="seed-name">말씨</span>
+
+            ·
+
+            <span id="stage-name">아기 씨앗</span>
+
+        </div>
+
+        <!-- 성장 게이지 -->
+        <div class="growth-bar"
+             role="progressbar"
+             aria-label="씨앗 성장">
+
+            <div id="growth-fill"></div>
+
+        </div>
+
+    </div>
+
+</header>
+
+  <!-- 단계 선택 화면 -->
+  <main id="app"></main>
+
+  <div class="overlay hidden" id="overlay"></div>
+
+  <!-- 기존 말씨 공통 기능 -->
+  <script src="../js/engine.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/db-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/seed.js"></script>
+  <script src="../js/growth.js"></script>
+
+  <!-- 단계 선택 기능 -->
+  <script src="./select-level.js"></script>
+
+</body>
+</html>

@@ -16,10 +16,31 @@
  *
  * 타일 이름·아이콘·설명·순서는 아래 registerActivity 의 icon, title, desc, order 를 고치세요.
  */
+
+/*
+ * 📖 단어 읽기 — 단계 선택 화면 연결
+ *
+ * 메인 화면에서 '단어 읽기' 버튼 클릭
+ * → reading-words/select-level.html
+ * → Level 1 / Level 2 / Level 3 선택
+ */
+
 (function () {
   'use strict';
+
   SG.registerActivity({
-    key: 'read-word', order: 1, icon: '📖', title: '단어 읽기', desc: '씨앗에게 낱말 소리를 들려줘요',
-    start: function () { SG.speech.stopSpeaking(); window.location.href = 'reading-words/level1.html'; }
+    key: 'read-word',
+    order: 1,
+    icon: '📖',
+    title: '단어 읽기',
+    desc: '씨앗에게 낱말 소리를 들려줘요',
+
+    start: function () {
+      // 기존 음성 출력 중지
+      SG.speech.stopSpeaking();
+
+      // 단어 읽기 단계 선택 화면으로 이동
+      window.location.href = 'reading-words/select-level.html';
+    }
   });
 })();
