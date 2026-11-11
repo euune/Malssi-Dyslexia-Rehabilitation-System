@@ -108,6 +108,34 @@ function stopRecognition() {
 // 5. 학습 단어 표시
 // ========================================
 
+// ========================================
+// 씨앗 성장 (공통 js/growth.js · 처음 화면·동화 읽기와 같은 경험치)
+//  - 처음 읽어 보기 +1, 다시 읽기 +1 (낱말마다 2번까지), 맞게 읽으면 +2 (낱말마다 한 번)
+//  - 경험치를 받으면 상단 씨앗 성장 게이지가 차오르고, 단계가 오르면 축하 창이 떠요
+// ========================================
+
+const expState = { index: -1, tries: 0, done: false };
+
+function giveExp(matched, word) {
+    if (!window.SG || !SG.growth || !SG.engine) return;
+    if (expState.index !== currentIndex) {
+        expState.index = currentIndex;
+        expState.tries = 0;
+        expState.done = false;
+    }
+    if (expState.done) return;
+    const EXP = SG.engine.CONFIG.exp;
+    if (expState.tries < 2) {
+        SG.growth.addExp(expState.tries === 0 ? EXP.firstTry : EXP.retry, { text: "✨", from: wordText });
+        expState.tries++;
+    }
+    if (matched) {
+        expState.done = true;
+        SG.growth.addExp(EXP.complete, { text: word, from: wordText, big: true });
+    }
+}
+
+
 function showWord() {
 
     const word = words[currentIndex];
@@ -208,7 +236,7 @@ function showWord() {
     const butterflyPosition =
         5 + ratio * 90;
 
-    gardenButterfly.style.left =
+    if (gardenButterfly) gardenButterfly.style.left =
         `${butterflyPosition}%`;
 
 
@@ -335,10 +363,13 @@ function startReading() {
 
 
         // 목표 단어와 비교
-        if (
+        const matched =
             normalize(spokenWord) ===
-            normalize(targetWord)
-        ) {
+            normalize(targetWord);
+
+        giveExp(matched, targetWord);
+
+        if (matched) {
 
             result.textContent =
                 `“${spokenWord}”라고 들렸어! 다음 단어도 읽어볼까?`;

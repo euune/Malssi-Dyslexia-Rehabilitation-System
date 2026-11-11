@@ -34,87 +34,14 @@
 
 <body>
 
-    <!-- ====================================
-         1. 말씨 정원 상단 바
-    ===================================== -->
-
-
-<!-- ====================================
-     말씨 정원 상단 바 + 잔디
-     스크롤 시 함께 상단 고정
-===================================== -->
-
-<div class="garden-header-wrap">
-
-    <!-- 상단 바 -->
-    <header class="topbar rw-topbar garden-topbar">
-
-        <!-- 정원으로 돌아가기 -->
-        <a href="../index.html"
-           class="icon-btn rw-home garden-home"
-           aria-label="정원으로 돌아가기">
-            🏡
-        </a>
-
-        <!-- 말씨 로고 및 성장 정보 -->
-        <div class="growth rw-growth garden-growth">
-
-            <div class="garden-title-row">
-
-                <!-- 말씨 로고 -->
-                <span class="garden-logo">
-                    말씨
-                </span>
-
-                <!-- 씨앗 성장 단계 -->
-                <span class="garden-stage">
-                    🌰 아기 씨앗
-                </span>
-
-                <!-- 학습 진행률 -->
-                <span id="progressText"
-                      class="garden-progress-text">
-                    1/3
-                </span>
-
-            </div>
-
-            <!-- 성장 진행 바 -->
-            <div class="growth-bar rw-progress-bar garden-track"
-                 id="progressBar"
-                 role="progressbar"
-                 aria-label="단어 학습 진행률"
-                 aria-valuemin="0"
-                 aria-valuemax="3"
-                 aria-valuenow="1">
-
-                <!-- 진행률 -->
-                <div id="progressFill"></div>
-
-                <!-- 나비 -->
-                <span id="gardenButterfly"
-                      class="garden-butterfly"
-                      aria-hidden="true">
-                    🦋
-                </span>
-
-                <!-- 성장 지점 -->
-                <span class="garden-point point-1"></span>
-                <span class="garden-point point-2"></span>
-                <span class="garden-point point-3"></span>
-
-            </div>
-
+    <!-- 상단 바: 처음 화면·동화 읽기와 같은 공통 상단 바 (🏡 정원으로 / 말씨 · 성장 단계 / 씨앗 성장 게이지) -->
+    <header class="topbar">
+        <a class="icon-btn" href="../index.html" aria-label="정원으로">🏡</a>
+        <div class="growth">
+            <div class="growth-label"><span id="seed-name">말씨</span> · <span id="stage-name">아기 씨앗</span></div>
+            <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
         </div>
-
     </header>
-
-    <!-- 상단 바와 함께 고정되는 잔디 -->
-    <div class="garden-grass"
-         aria-hidden="true">
-    </div>
-
-</div>
 
 <!-- ====================================
      기존 메인 학습 화면
@@ -129,6 +56,20 @@
     ===================================== -->
 
     <main class="rw-page">
+
+        <!-- 이 단계 낱말 진행도 (level1_script.js 가 progressText · progressFill · progressBar 를 갱신) -->
+        <div class="rw-level">
+            <div class="rw-level-label">단어 읽기 · 1단계 · <span id="progressText">1/3</span></div>
+            <div class="rw-level-bar"
+                 id="progressBar"
+                 role="progressbar"
+                 aria-label="단어 학습 진행률"
+                 aria-valuemin="0"
+                 aria-valuemax="3"
+                 aria-valuenow="1">
+                <div id="progressFill"></div>
+            </div>
+        </div>
 
         <!-- 씨앗 캐릭터와 말풍선 -->
         <section class="rw-stage"
@@ -243,6 +184,18 @@
     <!-- ====================================
          6. JavaScript 연결
     ===================================== -->
+
+    <div class="overlay hidden" id="overlay"></div>
+
+    <!-- 공통: 상단 바의 씨앗 성장(경험치)을 처음 화면·동화 읽기와 함께 씀 -->
+    <script src="../js/hangul.js"></script>
+    <script src="../js/engine.js"></script>
+    <script src="../js/store.js"></script>
+    <script src="../js/db-config.js"></script>
+    <script src="../js/db.js"></script>
+    <script src="../js/seed.js"></script>
+    <script src="../js/growth.js"></script>
+    <script>SG.growth.update();</script>
 
     <script src="level1_script.js"></script>
 

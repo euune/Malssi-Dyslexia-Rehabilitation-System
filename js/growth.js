@@ -93,7 +93,7 @@
     ov.querySelector('p').textContent = SG.hangul.josa(name, '이/가') + ' ‘' + SG.engine.STAGES[stage] + '’ 모습으로 자랐어요!';
     ov.querySelector('button').addEventListener('click', function () { ov.classList.add('hidden'); });
     ov.classList.remove('hidden');
-    SG.seed.react('happy');
+    if ($('seed')) SG.seed.react('happy');
   }
 
   function reducedMotion() {
@@ -143,7 +143,7 @@
    * @returns {Promise} 씨앗에 닿으면 resolve
    */
   function flyToSeed(text, from, big) {
-    var seed = $('seed');
+    var seed = $('seed') || document.querySelector('.growth-bar'); // 씨앗 그림이 없는 페이지는 성장 게이지로
     if (!seed || !document.body.animate || reducedMotion()) return Promise.resolve();
     var delay = flying * 160;
     flying++;

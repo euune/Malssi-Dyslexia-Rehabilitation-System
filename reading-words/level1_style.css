@@ -1012,3 +1012,33 @@ button:active:not(:disabled) {
         height: 10px;
     }
 }
+
+
+/* ========================================
+   낱말 진행도 (상단 바가 공통 씨앗 성장 게이지로 바뀌면서 본문 맨 위로 옮김)
+   level2 · level3 도 이 파일을 함께 씀
+======================================== */
+
+.rw-level {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 4px 12px;
+}
+
+.rw-level-label {
+    flex: none;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--rw-muted);
+    white-space: nowrap;
+}
+
+.rw-level-bar {
+    flex: 1;
+    min-width: 0;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #e6e4da;
+}
