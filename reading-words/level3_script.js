@@ -396,26 +396,113 @@ function revealMeaning() {
 // 7. 다음 단어로 이동
 // ========================================
 
+
+/* ========================================
+   7. Level 3 학습 완료 화면
+======================================== */
+
+function showLevelComplete() {
+
+    // 진행 중인 음성 인식 종료
+    stopRecognition();
+
+    // 음성 출력 중지
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+    // 기존 학습 화면 가져오기
+    const page = document.querySelector(".rw-page");
+
+    if (!page) return;
+
+    // 기존 문제 화면을 완료 화면으로 교체
+    page.innerHTML = `
+
+        <section class="rw-complete">
+
+            <!-- 씨앗 캐릭터 -->
+            <img
+                src="../images/seed.png"
+                alt="씨앗 캐릭터"
+                class="rw-complete-seed"
+            >
+
+            <!-- 완료 안내 -->
+            <p class="rw-complete-label">
+                🌱 단어 읽기 3단계 완료
+            </p>
+
+            <h1 class="rw-complete-title"
+                tabindex="-1">
+                단어를 모두 배웠어!
+            </h1>
+
+            <p class="rw-complete-message">
+                씨앗이 모든 단어를 배웠어요!
+                <br>
+                함께 읽어 줘서 고마워요.
+            </p>
+
+            <!-- 화면 이동 버튼 -->
+            <div class="rw-complete-actions">
+
+                <!-- 말씨 메인 정원으로 이동 -->
+                <a
+                    href="../index.html"
+                    class="rw-complete-home">
+
+                    🏡 정원으로 돌아가기
+
+                </a>
+
+                <!-- 단어 읽기 단계 선택 화면 -->
+                <a
+                    href="./select-level.html"
+                    class="rw-complete-select">
+
+                    단계 다시 선택하기
+
+                </a>
+
+            </div>
+
+        </section>
+    `;
+
+    // 완료 문구에 키보드 포커스
+    page.querySelector(".rw-complete-title").focus();
+}
+
+
+/* ========================================
+   8. 다음 단어로 이동
+======================================== */
+
 function nextWord() {
 
     // 이미지를 확인하지 않았다면 이동 불가
     if (!isMeaningRevealed) return;
 
+    // 음성 인식 중단
     stopRecognition();
 
+    // 다음 단어로 이동
     currentIndex++;
 
-    // 모든 단어 학습 완료
+    // 모든 단어를 학습한 경우
     if (currentIndex >= words.length) {
 
-        alert("3단계 단어를 씨앗이 모두 배웠어!");
+        // 브라우저 alert 대신 완료 화면 표시
+        showLevelComplete();
 
-        // 처음 단어부터 다시 시작
-        currentIndex = 0;
+        return;
     }
 
+    // 다음 문제 표시
     showWord();
 }
+
 
 
 // ========================================

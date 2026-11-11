@@ -458,40 +458,111 @@ function startReading() {
 // 8. 다음 단어로 이동
 // ========================================
 
-function nextWord() {
 
-    // 진행 중인 음성 인식 종료
+/* ========================================
+   Level 1 학습 완료 화면
+======================================== */
+
+function showLevelComplete() {
+
+    // 음성 인식 중단
     stopRecognition();
 
+    // 음성 출력 중단
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+    // 학습 화면 가져오기
+    const page = document.querySelector(".rw-page");
+
+    if (!page) return;
+
+    // 기존 학습 화면을 완료 화면으로 변경
+    page.innerHTML = `
+
+        <section class="rw-complete">
+
+            <!-- 씨앗 캐릭터 -->
+            <img
+                src="../images/seed.png"
+                alt="씨앗 캐릭터"
+                class="rw-complete-seed"
+            >
+
+            <!-- 완료 안내 -->
+            <p class="rw-complete-label">
+                🌱 단어 읽기 1단계 완료
+            </p>
+
+            <h1 class="rw-complete-title" tabindex="-1">
+                단어를 모두 배웠어!
+            </h1>
+
+            <p class="rw-complete-message">
+                씨앗이 1단계의 모든 단어를 배웠어요!
+                <br>
+                이제 다음 단계로 넘어가 볼까요?
+            </p>
+
+            <!-- 완료 후 이동 버튼 -->
+            <div class="rw-complete-actions">
+
+                <!-- Level 2 이동 -->
+                <a
+                    href="./level2.html"
+                    class="rw-complete-home">
+
+                    🌿 2단계로 넘어가기 →
+
+                </a>
+
+                <!-- 단계 선택 화면 -->
+                <a
+                    href="./select-level.html"
+                    class="rw-complete-select">
+
+                    단계 다시 선택하기
+
+                </a>
+
+            </div>
+
+        </section>
+    `;
+
+    // 완료 메시지에 포커스
+    page.querySelector(".rw-complete-title").focus();
+}
+
+
+/* ========================================
+   다음 단어로 이동
+======================================== */
+
+function nextWord() {
+
+    // 음성 인식 중단
+    stopRecognition();
 
     // 재생 중인 음성 종료
     if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
     }
 
-
     // 다음 단어로 이동
     currentIndex++;
 
-
-    // ====================================
-    // Level 1 학습 완료
-    // ====================================
-
+    // Level 1의 모든 단어를 학습한 경우
     if (currentIndex >= words.length) {
 
-        alert(
-            "1단계 단어를 씨앗이 다 배웠어! 2단계 단어도 알려줘!"
-        );
-
-        // Level 2 화면으로 이동
-        window.location.href = "./level2.html";
+        // 기존 alert 대신 완료 화면 표시
+        showLevelComplete();
 
         return;
     }
 
-
-    // 다음 단어 표시
+    // 다음 단어 화면 표시
     showWord();
 }
 

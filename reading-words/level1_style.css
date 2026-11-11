@@ -1192,3 +1192,178 @@ button:active:not(:disabled) {
         font-size: 12px;
     }
 }
+
+/* ========================================
+   Level 1, 2, 3 공통 완료 화면
+======================================== */
+
+.rw-complete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 520px;
+    padding: 35px 24px;
+
+    border: 2px solid var(--rw-line, #e5d9b9);
+    border-radius: 22px;
+
+    background: var(--rw-card, #fffdf5);
+
+    box-shadow:
+        0 8px 22px rgba(80, 70, 40, 0.07);
+
+    text-align: center;
+}
+
+
+/* 씨앗 캐릭터 */
+.rw-complete-seed {
+    width: 150px;
+    height: 150px;
+
+    margin-bottom: 12px;
+
+    object-fit: contain;
+}
+
+
+/* 완료 단계 문구 */
+.rw-complete-label {
+    margin: 8px 0 12px;
+
+    color: #477a3c;
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+/* 완료 제목 */
+.rw-complete-title {
+    margin: 0 0 18px;
+
+    color: #3f4335;
+
+    font-family: 'Jua', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+
+    line-height: 1.4;
+    word-break: keep-all;
+}
+
+
+/* 완료 설명 */
+.rw-complete-message {
+    margin: 0 0 28px;
+
+    color: #756f62;
+
+    font-size: 17px;
+    line-height: 1.8;
+
+    word-break: keep-all;
+}
+
+
+/* 버튼 영역 */
+.rw-complete-actions {
+    display: flex;
+    flex-direction: column;
+
+    gap: 12px;
+    width: 100%;
+    max-width: 310px;
+}
+
+
+/* 버튼 공통 디자인 */
+.rw-complete-actions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 54px;
+    padding: 13px 18px;
+
+    border-radius: 15px;
+
+    font-family: 'Gowun Dodum', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+
+    text-align: center;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
+}
+
+
+/* 다음 단계 이동 버튼 */
+.rw-complete-home {
+    border: 2px solid #5b9a5f;
+
+    background: #5b9a5f;
+    color: #ffffff;
+
+    box-shadow: 0 4px 0 #477a3c;
+}
+
+.rw-complete-home:hover {
+    background: #477a3c;
+    transform: translateY(-2px);
+}
+
+
+/* 단계 다시 선택하기 버튼 */
+.rw-complete-select {
+    border: 2px solid #e5d9b9;
+
+    background: #ffffff;
+    color: #477a3c;
+}
+
+.rw-complete-select:hover {
+    background: #e6f2dc;
+    transform: translateY(-2px);
+}
+
+
+/* 키보드 접근성 */
+.rw-complete-actions a:focus-visible {
+    outline: 3px solid #91c77f;
+    outline-offset: 3px;
+}
+
+
+/* 모바일 화면 */
+@media (max-width: 480px) {
+
+    .rw-complete {
+        min-height: 450px;
+        padding: 28px 16px;
+    }
+
+    .rw-complete-seed {
+        width: 120px;
+        height: 120px;
+    }
+
+    .rw-complete-title {
+        font-size: 27px;
+    }
+
+    .rw-complete-message {
+        font-size: 15px;
+    }
+
+    .rw-complete-actions a {
+        font-size: 15px;
+    }
+}

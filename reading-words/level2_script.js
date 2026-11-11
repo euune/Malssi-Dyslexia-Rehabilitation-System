@@ -416,16 +416,98 @@ function startReading() {
 // 7. 다음 단어로 이동
 // ========================================
 
+/* ========================================
+   Level 2 학습 완료 화면
+======================================== */
+
+function showLevelComplete() {
+
+    // 음성 인식 중단
+    stopRecognition();
+
+    // 음성 출력 중단
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+    // 학습 화면 가져오기
+    const page = document.querySelector(".rw-page");
+
+    if (!page) return;
+
+    // 기존 학습 화면을 완료 화면으로 변경
+    page.innerHTML = `
+
+        <section class="rw-complete">
+
+            <!-- 씨앗 캐릭터 -->
+            <img
+                src="../images/seed.png"
+                alt="씨앗 캐릭터"
+                class="rw-complete-seed"
+            >
+
+            <!-- 완료 안내 -->
+            <p class="rw-complete-label">
+                🌿 단어 읽기 2단계 완료
+            </p>
+
+            <h1 class="rw-complete-title" tabindex="-1">
+                단어를 모두 배웠어!
+            </h1>
+
+            <p class="rw-complete-message">
+                씨앗이 2단계의 모든 단어를 배웠어요!
+                <br>
+                마지막 단계에도 도전해 볼까요?
+            </p>
+
+            <!-- 완료 후 이동 버튼 -->
+            <div class="rw-complete-actions">
+
+                <!-- Level 3 이동 -->
+                <a
+                    href="./level3.html"
+                    class="rw-complete-home">
+
+                    🌳 3단계로 넘어가기 →
+
+                </a>
+
+                <!-- 단계 선택 화면 -->
+                <a
+                    href="./select-level.html"
+                    class="rw-complete-select">
+
+                    단계 다시 선택하기
+
+                </a>
+
+            </div>
+
+        </section>
+    `;
+
+    // 완료 메시지에 포커스
+    page.querySelector(".rw-complete-title").focus();
+}
+
+
+/* ========================================
+   다음 단어로 이동
+======================================== */
+
 function nextWord() {
 
     // 음성 인식 중단
     stopRecognition();
 
-    // 음성 재생 중단
+    // 재생 중인 음성 종료
     if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
     }
 
+    // 듣기 버튼 활성화
     listenBtn.disabled = false;
 
     // 다음 단어로 이동
@@ -434,17 +516,16 @@ function nextWord() {
     // Level 2의 모든 단어를 학습한 경우
     if (currentIndex >= words.length) {
 
-        alert("2단계 단어를 씨앗이 다 배웠어! 3단계 단어도 알려줘!");
-
-        // Level 3 화면으로 이동
-        window.location.href = "./level3.html";
+        // 기존 alert 대신 완료 화면 표시
+        showLevelComplete();
 
         return;
     }
 
-    // 다음 단어 표시
+    // 다음 단어 화면 표시
     showWord();
 }
+
 
 
 
