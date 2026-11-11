@@ -28,11 +28,43 @@
         </div>
     </header>
 
-    <!-- 메인 화면 -->
-    <main class="rw-page">
+
+<!-- ====================================
+     Level 2 메인 화면
+==================================== -->
+
+<main class="rw-page">
+
+    <!-- 단계 선택 화면으로 돌아가기 -->
+    <div class="rw-navigation">
+
+        <a href="./select-level.html"
+           class="rw-garden-btn"
+           aria-label="단어 읽기 단계 선택 화면으로 돌아가기">
+
+            단계화면으로 🏡
+
+        </a>
+
+    </div>
+
+    <!-- 기존 Level 2 단어 학습 진행도는 아래에 유지 -->
+
 
         <!-- 이 단계 낱말 진행도 (level2_script.js 가 progressText · progressFill · progressBar 를 갱신) -->
         <div class="rw-level">
+
+<!-- 이전 문제로 돌아가기 버튼 -->
+<button
+    id="prevBtn"
+    type="button"
+    class="rw-prev-btn"
+    aria-label="이전 문제로 돌아가기"
+    title="이전 문제"
+    disabled>
+    ←
+</button>
+
             <div class="rw-level-label">단어 읽기 · 2단계 · <span id="progressText">1/3</span></div>
             <div class="rw-level-bar"
                  id="progressBar"

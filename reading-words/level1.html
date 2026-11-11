@@ -66,7 +66,7 @@
         <a href="./select-level.html"
              class="rw-garden-btn">
 
-        정원으로 🏡
+        단계화면으로 🏡
 
     </a>
 
@@ -74,6 +74,18 @@
 
         <!-- 이 단계 낱말 진행도 (level1_script.js 가 progressText · progressFill · progressBar 를 갱신) -->
         <div class="rw-level">
+
+<!-- 이전 문제로 돌아가기 버튼 -->
+<button
+    id="prevBtn"
+    type="button"
+    class="rw-prev-btn"
+    aria-label="이전 문제로 돌아가기"
+    title="이전 문제"
+    disabled>
+    ←
+</button>
+
             <div class="rw-level-label">단어 읽기 · 1단계 · <span id="progressText">1/3</span></div>
             <div class="rw-level-bar"
                  id="progressBar"

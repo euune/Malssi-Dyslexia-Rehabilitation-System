@@ -18,7 +18,6 @@ const LEVELS = [
     description: '그림과 단어를 보고, 음성을 들은 뒤 따라 읽어요.',
     detail: '씨앗과 함께 차근차근 시작해 볼까?',
     href: './level1.html',
-    icon: '🌱',
   },
   {
     number: 2,
@@ -26,7 +25,6 @@ const LEVELS = [
     description: '그림과 단어를 먼저 읽고, 필요하면 음성 힌트를 들어요.',
     detail: '먼저 스스로 읽어 보고, 필요할 때 도움을 받아 봐!',
     href: './level2.html',
-    icon: '🌿',
   },
   {
     number: 3,
@@ -34,7 +32,6 @@ const LEVELS = [
     description: '단어만 보고 읽은 뒤, 그림으로 의미를 확인해요.',
     detail: '이번엔 단어만 보고 읽는 데 도전해 볼까?',
     href: './level3.html',
-    icon: '🌳',
   },
 ];
 
@@ -120,7 +117,7 @@ const LEVELS = [
 
           <nav
             class="level-list"
-            aria-label="단어 읽기 단계 선택">
+            aria-label=" 단어 읽기 단계 선택">
 
             ${LEVELS.map((level) => `
 

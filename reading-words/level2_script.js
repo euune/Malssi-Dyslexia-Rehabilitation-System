@@ -107,6 +107,7 @@ function giveExp(matched, word) {
 
 
 function showWord() {
+    updatePrevButton();
 
     const word = words[currentIndex];
     const targetIndex = currentIndex;
@@ -464,5 +465,69 @@ nextBtn.addEventListener("click", nextWord);
 // ========================================
 // 9. 첫 화면 실행
 // ========================================
+
+/* ========================================
+   이전 문제로 돌아가기
+   Level 1 / Level 2 / Level 3 공통
+======================================== */
+
+// 이전 문제 버튼
+const prevBtn = document.getElementById("prevBtn");
+
+
+// 현재 문제 번호에 따라 버튼 활성화
+function updatePrevButton() {
+
+    if (!prevBtn) return;
+
+    // 첫 번째 문제에서는 이전 버튼 비활성화
+    prevBtn.disabled = (currentIndex === 0);
+
+}
+
+
+// 이전 문제로 이동
+function previousWord() {
+
+    // 첫 번째 문제라면 이동하지 않음
+    if (currentIndex <= 0) {
+        return;
+    }
+
+    // 음성 인식 중단
+    stopRecognition();
+
+    // 재생 중인 음성 종료
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+    // 이전 문제 번호로 변경
+    currentIndex--;
+
+    // 이전 문제 화면 다시 표시
+    showWord();
+
+    // 마이크 버튼 활성화
+    micBtn.disabled = false;
+
+    // Level 1, Level 2의 음성 듣기 버튼 활성화
+    if (
+        typeof listenBtn !== "undefined" &&
+        listenBtn
+    ) {
+        listenBtn.disabled = false;
+    }
+
+    // 이전 버튼 상태 갱신
+    updatePrevButton();
+
+}
+
+
+// 이전 문제 버튼 클릭 이벤트
+if (prevBtn) {
+    prevBtn.addEventListener("click", previousWord);
+}
 
 showWord();

@@ -1117,3 +1117,78 @@ button:active:not(:disabled) {
         font-size: 14px;
     }
 }
+
+/* ========================================
+   이전 문제로 돌아가기 버튼
+   Level 1 / 2 / 3 공통 디자인
+======================================== */
+
+.rw-prev-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 46px;
+    height: 46px;
+
+    padding: 0;
+
+    border: 2px solid #e8d9b7;
+    border-radius: 50%;
+
+    background: #fffdf7;
+    color: #3d3227;
+
+    font-size: 23px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+
+/* 마우스를 올렸을 때 */
+.rw-prev-btn:hover:not(:disabled) {
+    background: #e6f2dc;
+    border-color: #5b9a5f;
+    transform: translateX(-2px);
+}
+
+/* 클릭했을 때 */
+.rw-prev-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+/* 첫 번째 문제에서는 비활성화 */
+.rw-prev-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* 키보드 접근성 */
+.rw-prev-btn:focus-visible {
+    outline: 3px solid #91c77f;
+    outline-offset: 3px;
+}
+
+/* 모바일 화면 */
+@media (max-width: 480px) {
+    .rw-prev-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .rw-level {
+        gap: 8px;
+    }
+
+    .rw-level-label {
+        font-size: 12px;
+    }
+}
