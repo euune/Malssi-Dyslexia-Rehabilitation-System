@@ -1367,3 +1367,141 @@ button:active:not(:disabled) {
         font-size: 15px;
     }
 }
+/* ========================================
+   간접 시각 피드백
+======================================== */
+
+.rw-feedback-card {
+    margin: 0 0 17px;
+    padding: 15px;
+
+    border: 2px solid #b8dba8;
+    border-radius: 17px;
+
+    background: #f3faee;
+
+    box-shadow:
+        0 4px 10px rgba(84, 130, 66, 0.07);
+}
+
+/* 숨김 처리 */
+.rw-feedback-card[hidden],
+.rw-feedback-card #feedbackImage[hidden],
+.rw-feedback-card #feedbackEmoji[hidden] {
+    display: none;
+}
+
+/* 상단 제목 */
+.rw-feedback-label {
+    margin: 0 0 10px;
+
+    color: #477a3c;
+    font-family: var(
+        --rw-title-font,
+        'Jua',
+        sans-serif
+    );
+    font-size: 18px;
+}
+
+/* 이미지 + 단어 정보 */
+.rw-feedback-body {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.rw-feedback-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 130px;
+    width: 130px;
+    height: 130px;
+
+    overflow: hidden;
+
+    border: 1px solid #e8d9b7;
+    border-radius: 15px;
+
+    background: #fffdf5;
+}
+
+#feedbackImage {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 대체 이모지 */
+#feedbackEmoji {
+    font-size: 57px;
+    line-height: 1;
+}
+
+/* 단어 정보 */
+.rw-feedback-info {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 인식된 단어 */
+.rw-feedback-word {
+    display: block;
+
+    color: #3f4335;
+    font-family: var(
+        --rw-title-font,
+        'Jua',
+        sans-serif
+    );
+
+    font-size: 29px;
+    font-weight: 400;
+}
+
+/* 단어 설명 */
+.rw-feedback-explanation {
+    margin: 3px 0 0;
+
+    font-size: 14px;
+    color: #756f62;
+    word-break: keep-all;
+}
+
+/* 재시도 안내 */
+.rw-feedback-note {
+    margin: 10px 0 0;
+
+    color: #477a3c;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    word-break: keep-all;
+}
+
+@media (max-width: 360px) {
+    .rw-feedback-card {
+        padding: 12px;
+    }
+
+    .rw-feedback-body {
+        gap: 12px;
+    }
+
+    .rw-feedback-visual {
+        flex-basis: 100px;
+        width: 100px;
+        height: 100px;
+    }
+
+    #feedbackEmoji {
+        font-size: 46px;
+    }
+
+    .rw-feedback-word {
+        font-size: 25px;
+    }
+}

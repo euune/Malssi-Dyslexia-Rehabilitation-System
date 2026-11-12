@@ -6,68 +6,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>말씨 - 단어 읽기 2단계</title>
 
-    <!-- Level 1과 동일한 글꼴 및 디자인 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="level1_style.css">
     <link rel="stylesheet" href="level2_style.css">
 </head>
-
 <body>
 
-    <!-- 상단 바: 처음 화면·동화 읽기와 같은 공통 상단 바 (🏡 정원으로 / 말씨 · 성장 단계 / 씨앗 성장 게이지) -->
+    <!-- 공통 씨앗 성장 상단 바 -->
     <header class="topbar">
         <a class="icon-btn" href="../index.html" aria-label="정원으로">🏡</a>
         <div class="growth">
-            <div class="growth-label"><span id="seed-name">말씨</span> · <span id="stage-name">아기 씨앗</span></div>
-            <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
+            <div class="growth-label">
+                <span id="seed-name">말씨</span> ·
+                <span id="stage-name">아기 씨앗</span>
+            </div>
+            <div class="growth-bar" role="progressbar" aria-label="씨앗 성장">
+                <div id="growth-fill"></div>
+            </div>
         </div>
     </header>
 
+    <main class="rw-page">
+        <div class="rw-navigation">
+            <a href="./select-level.html" class="rw-garden-btn">
+                단계화면으로 🏡
+            </a>
+        </div>
 
-<!-- ====================================
-     Level 2 메인 화면
-==================================== -->
-
-<main class="rw-page">
-
-    <!-- 단계 선택 화면으로 돌아가기 -->
-    <div class="rw-navigation">
-
-        <a href="./select-level.html"
-           class="rw-garden-btn"
-           aria-label="단어 읽기 단계 선택 화면으로 돌아가기">
-
-            단계화면으로 🏡
-
-        </a>
-
-    </div>
-
-    <!-- 기존 Level 2 단어 학습 진행도는 아래에 유지 -->
-
-
-        <!-- 이 단계 낱말 진행도 (level2_script.js 가 progressText · progressFill · progressBar 를 갱신) -->
         <div class="rw-level">
+            <button id="prevBtn" type="button"
+                    class="rw-prev-btn"
+                    aria-label="이전 문제" disabled>←</button>
 
-<!-- 이전 문제로 돌아가기 버튼 -->
-<button
-    id="prevBtn"
-    type="button"
-    class="rw-prev-btn"
-    aria-label="이전 문제로 돌아가기"
-    title="이전 문제"
-    disabled>
-    ←
-</button>
+            <div class="rw-level-label">
+                단어 읽기 · 2단계 ·
+                <span id="progressText">1/3</span>
+            </div>
 
-            <div class="rw-level-label">단어 읽기 · 2단계 · <span id="progressText">1/3</span></div>
-            <div class="rw-level-bar"
-                 id="progressBar"
+            <div class="rw-level-bar" id="progressBar"
                  role="progressbar"
                  aria-label="단어 학습 진행률"
                  aria-valuemin="0"
@@ -77,71 +57,86 @@
             </div>
         </div>
 
-        <!-- 씨앗 캐릭터와 말풍선 -->
-        <section class="rw-stage"
-                 aria-label="씨앗의 반응">
-
+        <!-- 씨앗 말풍선 -->
+        <section class="rw-stage" aria-label="씨앗의 반응">
             <img src="../images/seed.png"
                  alt="씨앗 캐릭터"
                  class="rw-seed-image">
 
-            <p id="result"
-               class="rw-bubble"
-               aria-live="polite">
+            <p id="result" class="rw-bubble" aria-live="polite">
                 이번엔 먼저 혼자 읽어볼까?
             </p>
-
         </section>
 
-        <!-- 단어 읽기 카드 -->
+        <!-- 학습 카드 -->
         <section class="rw-card">
 
             <h1 class="instruction">
                 그림과 단어를 보고 스스로 읽어볼까요?
             </h1>
 
-            <!-- 단어 이미지 -->
             <div class="image-box">
+                <img id="wordImage" alt="단어 그림" hidden>
+                <span id="wordEmoji"
+                      aria-hidden="true" hidden></span>
+            </div>
 
-                <img id="wordImage"
-                     alt="단어 그림"
+            <div class="word-area">
+                <h2 id="wordText">야구공</h2>
+            </div>
+
+            <!-- 간접적인 이미지 피드백 -->
+            <section id="feedbackCard"
+                     class="rw-feedback-card"
+                     aria-label="새로운 단어 발견"
                      hidden>
 
-                <span id="wordEmoji"
-                      aria-hidden="true"
-                      hidden></span>
+                <p class="rw-feedback-label">
+                    🌼 새로운 단어 발견!
+                </p>
 
-            </div>
+                <div class="rw-feedback-body">
 
-            <!-- 단어 -->
-            <div class="word-area">
-                <h2 id="wordText">발</h2>
-            </div>
+                    <div class="rw-feedback-visual">
+                        <img id="feedbackImage" alt="" hidden>
+                        <span id="feedbackEmoji"
+                              aria-hidden="true"></span>
+                    </div>
 
-            <!-- 스스로 읽기 + 선택적 음성 힌트 -->
+                    <div class="rw-feedback-info">
+                        <strong id="feedbackWord"
+                                class="rw-feedback-word"></strong>
+
+                        <p id="feedbackExplanation"
+                           class="rw-feedback-explanation"></p>
+                    </div>
+
+                </div>
+
+                <p class="rw-feedback-note">
+                    다른 단어도 발견했네!
+                    처음 단어를 다시 읽어볼까?
+                </p>
+
+            </section>
+
+            <!-- 스스로 읽기 및 음성 힌트 -->
             <div class="rw-controls">
-
-                <button id="micBtn"
-                        type="button"
-                        class="mic-btn">
+                <button id="micBtn" type="button" class="mic-btn">
                     🎤 내가 읽어볼게요!
                 </button>
 
-                <button id="listenBtn"
-                        type="button"
-                        class="listen-btn">
+                <button id="listenBtn" type="button" class="listen-btn">
                     🔈 힌트를 들어볼까요?
                 </button>
-
             </div>
 
             <p class="rw-hint-guide">
-                잘 몰라도 괜찮아요! 힌트를 눌러보세요!            </p>
+                잘 몰라도 괜찮아요!
+                필요할 때 음성 힌트를 들어보세요.
+            </p>
 
-            <!-- 다음 단어 -->
-            <button id="nextBtn"
-                    type="button"
-                    class="next-btn">
+            <button id="nextBtn" type="button" class="next-btn">
                 다음으로 넘어가볼까요? →
             </button>
 
@@ -150,7 +145,7 @@
 
     <div class="overlay hidden" id="overlay"></div>
 
-    <!-- 공통: 상단 바의 씨앗 성장(경험치)을 처음 화면·동화 읽기와 함께 씀 -->
+    <!-- 공통 JavaScript -->
     <script src="../js/hangul.js"></script>
     <script src="../js/engine.js"></script>
     <script src="../js/store.js"></script>
@@ -158,7 +153,12 @@
     <script src="../js/db.js"></script>
     <script src="../js/seed.js"></script>
     <script src="../js/growth.js"></script>
-    <script>SG.growth.update();</script>
+
+    <script>
+        if (window.SG && SG.growth) {
+            SG.growth.update();
+        }
+    </script>
 
     <script src="level2_script.js"></script>
 

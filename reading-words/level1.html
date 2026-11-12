@@ -159,7 +159,52 @@
                 </h2>
 
             </div>
+<!-- 간접 시각 피드백: 등록된 다른 단어가 인식되었을 때 표시 -->
+<section
+    id="feedbackCard"
+    class="rw-feedback-card"
+    aria-label="새로운 단어 발견"
+    hidden
+>
+    <p class="rw-feedback-label">
+        🌼 새로운 단어 발견!
+    </p>
 
+    <div class="rw-feedback-body">
+        <div class="rw-feedback-visual">
+
+            <!-- 이미지가 존재할 때 표시 -->
+            <img
+                id="feedbackImage"
+                alt=""
+                hidden
+            >
+
+            <!-- 이미지가 없을 때 이모지 표시 -->
+            <span
+                id="feedbackEmoji"
+                aria-hidden="true">
+            </span>
+        </div>
+
+        <div class="rw-feedback-info">
+            <strong
+                id="feedbackWord"
+                class="rw-feedback-word">
+            </strong>
+
+            <p
+                id="feedbackExplanation"
+                class="rw-feedback-explanation">
+            </p>
+        </div>
+    </div>
+
+    <p class="rw-feedback-note">
+        다른 단어도 발견했네!
+        처음 단어를 다시 읽어볼까?
+    </p>
+</section>
 
             <!-- ====================================
                  4. 음성 학습 버튼

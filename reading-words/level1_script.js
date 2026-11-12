@@ -2,7 +2,7 @@
 "use strict";
 
 // ========================================
-// 1. 학습 단어 데이터
+// 1. Level 1 학습 단어
 // ========================================
 
 const words = [
@@ -23,12 +23,54 @@ const words = [
     }
 ];
 
+// ========================================
+// 2. 간접 시각 피드백 단어 사전
+// ========================================
+// 목표 단어 -> 다른 단어 -> 그림과 의미
+// 이미지 파일이 없다면 이모지로 대체됩니다.
+
+const feedbackWords = {
+    "발": {
+        "벌": {
+            image: "../images/bee.jpg",
+            emoji: "🐝",
+            meaning: "꽃 사이를 날아다니는 곤충"
+        },
+        "밤": {
+            image: "../images/chestnut.jpg",
+            emoji: "🌰",
+            meaning: "먹을 수 있는 나무 열매"
+        },
+        "밥": {
+            image: "../images/rice.jpg",
+            emoji: "🍚",
+            meaning: "쌀을 익혀 만든 음식"
+        }
+    },
+
+    "사과": {
+        "사자": {
+            image: "../images/lion.jpg",
+            emoji: "🦁",
+            meaning: "갈기가 있는 커다란 동물"
+        }
+    },
+
+    "나비": {
+        "나무": {
+            image: "../images/tree.jpg",
+            emoji: "🌳",
+            meaning: "뿌리와 줄기, 가지가 있는 식물"
+        }
+    }
+};
+
 let currentIndex = 0;
 let recognition = null;
-
+let feedbackRequestId = 0;
 
 // ========================================
-// 2. HTML 요소 가져오기
+// 3. HTML 요소
 // ========================================
 
 const wordText =
@@ -64,30 +106,124 @@ const progressBar =
 const gardenButterfly =
     document.getElementById("gardenButterfly");
 
+const prevBtn =
+    document.getElementById("prevBtn");
+
+// 새 피드백 요소
+const feedbackCard =
+    document.getElementById("feedbackCard");
+
+const feedbackImage =
+    document.getElementById("feedbackImage");
+
+const feedbackEmoji =
+    document.getElementById("feedbackEmoji");
+
+const feedbackWord =
+    document.getElementById("feedbackWord");
+
+const feedbackExplanation =
+    document.getElementById("feedbackExplanation");
 
 // ========================================
-// 3. 글자 비교용 정규화
+// 4. 단어 정규화
 // ========================================
 
 function normalize(text) {
-
     return String(text).replace(
         /[^\p{L}\p{N}]/gu,
         ""
     );
 }
 
+// ========================================
+// 5. 간접 피드백 초기화
+// ========================================
+
+function hideFeedback() {
+    feedbackRequestId += 1;
+
+    feedbackCard.hidden = true;
+    feedbackImage.hidden = true;
+    feedbackImage.removeAttribute("src");
+    feedbackEmoji.hidden = false;
+}
 
 // ========================================
-// 4. 진행 중인 음성 인식 종료
+// 6. 간접 이미지 피드백 표시
+// ========================================
+
+function showFeedback(targetWord, spokenWord) {
+    const alternatives =
+        feedbackWords[normalize(targetWord)];
+
+    const info =
+        alternatives &&
+        alternatives[normalize(spokenWord)];
+
+    // 등록되지 않은 단어는 표시하지 않음
+    if (!info) {
+        hideFeedback();
+        return false;
+    }
+
+    hideFeedback();
+
+    const requestId = feedbackRequestId;
+    const wordIndex = currentIndex;
+
+    // 단어와 설명 표시
+    feedbackWord.textContent =
+        normalize(spokenWord);
+
+    feedbackExplanation.textContent =
+        info.meaning;
+
+    // 이미지가 없을 때 표시할 이모지
+    feedbackEmoji.textContent = info.emoji;
+    feedbackEmoji.hidden = false;
+
+    feedbackCard.hidden = false;
+
+    // 등록된 이미지 파일 확인
+    if (info.image) {
+        const preload = new Image();
+
+        preload.onload = function () {
+            // 이미 다음 단어로 넘어갔다면 무시
+            if (
+                requestId !== feedbackRequestId ||
+                wordIndex !== currentIndex
+            ) {
+                return;
+            }
+
+            feedbackImage.src = info.image;
+            feedbackImage.alt =
+                normalize(spokenWord) + " 그림";
+
+            feedbackImage.hidden = false;
+            feedbackEmoji.hidden = true;
+        };
+
+        preload.onerror = function () {
+            // 이미지가 없으면 이모지를 유지
+        };
+
+        preload.src = info.image;
+    }
+
+    return true;
+}
+
+// ========================================
+// 7. 기존 음성 인식 중단
 // ========================================
 
 function stopRecognition() {
-
     if (!recognition) return;
 
     const active = recognition;
-
     recognition = null;
 
     active.onresult = null;
@@ -103,84 +239,109 @@ function stopRecognition() {
     micBtn.disabled = false;
 }
 
-
 // ========================================
-// 5. 학습 단어 표시
-// ========================================
-
-// ========================================
-// 씨앗 성장 (공통 js/growth.js · 처음 화면·동화 읽기와 같은 경험치)
-//  - 처음 읽어 보기 +1, 다시 읽기 +1 (낱말마다 2번까지), 맞게 읽으면 +2 (낱말마다 한 번)
-//  - 경험치를 받으면 상단 씨앗 성장 게이지가 차오르고, 단계가 오르면 축하 창이 떠요
+// 8. 기존 씨앗 성장 EXP
 // ========================================
 
-const expState = { index: -1, tries: 0, done: false };
+const expState = {
+    index: -1,
+    tries: 0,
+    done: false
+};
 
 function giveExp(matched, word) {
-    if (!window.SG || !SG.growth || !SG.engine) return;
+    if (
+        !window.SG ||
+        !SG.growth ||
+        !SG.engine
+    ) {
+        return;
+    }
+
     if (expState.index !== currentIndex) {
         expState.index = currentIndex;
         expState.tries = 0;
         expState.done = false;
     }
+
     if (expState.done) return;
+
     const EXP = SG.engine.CONFIG.exp;
+
     if (expState.tries < 2) {
-        SG.growth.addExp(expState.tries === 0 ? EXP.firstTry : EXP.retry, { text: "✨", from: wordText });
+        SG.growth.addExp(
+            expState.tries === 0
+                ? EXP.firstTry
+                : EXP.retry,
+            {
+                text: "✨",
+                from: wordText
+            }
+        );
+
         expState.tries++;
     }
+
     if (matched) {
         expState.done = true;
-        SG.growth.addExp(EXP.complete, { text: word, from: wordText, big: true });
+
+        SG.growth.addExp(
+            EXP.complete,
+            {
+                text: word,
+                from: wordText,
+                big: true
+            }
+        );
     }
 }
 
+// ========================================
+// 9. 이전 문제 버튼 상태
+// ========================================
+
+function updatePrevButton() {
+    if (!prevBtn) return;
+
+    prevBtn.disabled = (currentIndex === 0);
+}
+
+// ========================================
+// 10. 현재 학습 단어 표시
+// ========================================
 
 function showWord() {
-    // 이전 문제 버튼 활성화 상태 갱신
     updatePrevButton();
+
+    // 다른 문제로 이동하면 피드백 초기화
+    hideFeedback();
 
     const word = words[currentIndex];
     const targetIndex = currentIndex;
 
-    // 단어 텍스트 표시
     wordText.textContent = word.text;
 
-
-    // ====================================
-    // 단어 이미지 표시
-    // ====================================
-
-    // 이미지가 없는 경우 사용할 이모지 준비
+    // 기존 단어 이미지
     wordImage.hidden = true;
     wordImage.removeAttribute("src");
-
     wordImage.alt = word.text + " 그림";
 
     wordEmoji.textContent = word.emoji;
     wordEmoji.hidden = false;
 
-
-    // 이미지 불러오기
     const preload = new Image();
 
     preload.onload = function () {
-
-        // 다른 단어로 이동했다면 무시
         if (targetIndex !== currentIndex) {
             return;
         }
 
         wordImage.src = word.image;
         wordImage.hidden = false;
-
         wordEmoji.hidden = true;
     };
 
-
-    // 이미지가 없는 경우 이모지 표시
     preload.onerror = function () {
-
         if (targetIndex !== currentIndex) {
             return;
         }
@@ -191,11 +352,7 @@ function showWord() {
 
     preload.src = word.image;
 
-
-    // ====================================
-    // 단어 진행률 업데이트
-    // ====================================
-
+    // 진행률 업데이트
     progressText.textContent =
         `${currentIndex + 1}/${words.length}`;
 
@@ -205,8 +362,6 @@ function showWord() {
     progressFill.style.width =
         `${progressPercent}%`;
 
-
-    // 접근성 진행 상태 업데이트
     progressBar.setAttribute(
         "aria-valuemax",
         String(words.length)
@@ -217,116 +372,72 @@ function showWord() {
         String(currentIndex + 1)
     );
 
-
-    // ====================================
     // 나비 위치 업데이트
-    // ====================================
-
-    // 단어가 바뀔 때 나비 이동
-    // 1번째: 5%
-    // 2번째: 50%
-    // 3번째: 95%
-
-    // 나비가 양 끝에서 잘리지 않도록
-    // 5% ~ 95% 구간으로 설정
-
     const ratio =
         words.length > 1
             ? currentIndex / (words.length - 1)
             : 0;
 
-    const butterflyPosition =
-        5 + ratio * 90;
-
-    if (gardenButterfly) gardenButterfly.style.left =
-        `${butterflyPosition}%`;
-
-
-    // ====================================
-    // 씨앗 말풍선 초기화
-    // ====================================
+    if (gardenButterfly) {
+        gardenButterfly.style.left =
+            `${5 + ratio * 90}%`;
+    }
 
     result.textContent =
         "단어를 들려줘!!";
-
 }
 
-
 // ========================================
-// 6. 단어 듣기 기능 (TTS)
+// 11. 단어 듣기 TTS
 // ========================================
 
 function playSound() {
-
-    // 브라우저 음성 합성 지원 확인
     if (!("speechSynthesis" in window)) {
-
         result.textContent =
             "음성 재생을 지원하지 않는 브라우저예요.";
-
         return;
     }
 
-    // 음성 인식 중이면 중단
     stopRecognition();
 
-    // 기존 음성 재생 종료
     window.speechSynthesis.cancel();
 
-
-    // 현재 학습 단어 가져오기
-    const word = words[currentIndex].text;
-
-
-    // 음성 생성
     const speech =
-        new SpeechSynthesisUtterance(word);
+        new SpeechSynthesisUtterance(
+            words[currentIndex].text
+        );
 
     speech.lang = "ko-KR";
     speech.rate = 0.8;
 
-
-    // 음성 재생
     window.speechSynthesis.speak(speech);
 }
 
-
 // ========================================
-// 7. 직접 읽기 기능 (STT)
+// 12. 직접 읽기 STT
 // ========================================
 
 function startReading() {
-
     const SpeechRecognition =
         window.SpeechRecognition ||
         window.webkitSpeechRecognition;
 
-
-    // 음성 인식 지원 확인
     if (!SpeechRecognition) {
-
         result.textContent =
             "음성 인식을 지원하지 않는 브라우저예요.";
-
         return;
     }
 
-
-    // 기존 음성 재생 중단
+    // 기존 음성 재생 종료
     if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
     }
 
-    // 이전 음성 인식 중단
     stopRecognition();
+    hideFeedback();
 
-
-    // ====================================
-    // 음성 인식 객체 생성
-    // ====================================
-
-    const active =
-        new SpeechRecognition();
+    // 음성 인식 객체
+    const active = new SpeechRecognition();
 
     recognition = active;
 
@@ -334,25 +445,17 @@ function startReading() {
     active.interimResults = false;
     active.maxAlternatives = 1;
 
-
-    // 현재 단어 저장
     const targetIndex = currentIndex;
     const targetWord = words[currentIndex].text;
 
-
-    // 씨앗의 말풍선
-    result.textContent =
-        "말씀해 주세요!";
-
+    result.textContent = "말씀해 주세요!";
     micBtn.disabled = true;
-
 
     // ====================================
     // 음성 인식 결과
     // ====================================
 
     active.onresult = function (event) {
-
         if (
             recognition !== active ||
             targetIndex !== currentIndex
@@ -363,34 +466,43 @@ function startReading() {
         const spokenWord =
             event.results[0][0].transcript.trim();
 
-
-        // 목표 단어와 비교
         const matched =
             normalize(spokenWord) ===
             normalize(targetWord);
 
+        // 기존 EXP 지급
         giveExp(matched, targetWord);
 
+        // 1. 목표 단어와 일치
         if (matched) {
+            hideFeedback();
 
             result.textContent =
                 `“${spokenWord}”라고 들렸어! 다음 단어도 읽어볼까?`;
+        }
 
-        } else {
+        // 2. 등록된 다른 단어 인식
+        else if (
+            showFeedback(targetWord, spokenWord)
+        ) {
+            result.textContent =
+                `“${spokenWord}”라는 단어로 들렸어! 이런 뜻도 있구나. “${targetWord}”도 다시 읽어줄래?`;
+        }
+
+        // 3. 등록되지 않은 다른 단어
+        else {
+            hideFeedback();
 
             result.textContent =
                 `“${spokenWord}”라고 들렸어. 다시 한 번 읽어볼까?`;
-
         }
     };
-
 
     // ====================================
     // 음성 인식 오류
     // ====================================
 
     active.onerror = function (event) {
-
         if (
             recognition !== active ||
             targetIndex !== currentIndex
@@ -398,34 +510,30 @@ function startReading() {
             return;
         }
 
+        hideFeedback();
+
         if (
             event.error === "not-allowed" ||
             event.error === "service-not-allowed"
         ) {
-
             result.textContent =
                 "마이크 사용을 허용해 주세요.";
-
-        } else if (event.error === "no-speech") {
-
+        } else if (
+            event.error === "no-speech"
+        ) {
             result.textContent =
                 "목소리가 잘 들리지 않았어. 다시 읽어볼까?";
-
         } else {
-
             result.textContent =
                 "음성 인식이 원활하지 않아요. 다시 시도해 주세요.";
-
         }
     };
-
 
     // ====================================
     // 음성 인식 종료
     // ====================================
 
     active.onend = function () {
-
         if (recognition !== active) {
             return;
         }
@@ -434,17 +542,9 @@ function startReading() {
         micBtn.disabled = false;
     };
 
-
-    // ====================================
-    // 음성 인식 시작
-    // ====================================
-
     try {
-
         active.start();
-
     } catch (error) {
-
         recognition = null;
         micBtn.disabled = false;
 
@@ -453,49 +553,38 @@ function startReading() {
     }
 }
 
-
 // ========================================
-// 8. 다음 단어로 이동
+// 13. Level 1 학습 완료 화면
 // ========================================
-
-
-/* ========================================
-   Level 1 학습 완료 화면
-======================================== */
 
 function showLevelComplete() {
-
-    // 음성 인식 중단
     stopRecognition();
 
-    // 음성 출력 중단
     if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
     }
 
-    // 학습 화면 가져오기
-    const page = document.querySelector(".rw-page");
+    const page =
+        document.querySelector(".rw-page");
 
     if (!page) return;
 
-    // 기존 학습 화면을 완료 화면으로 변경
     page.innerHTML = `
-
         <section class="rw-complete">
 
-            <!-- 씨앗 캐릭터 -->
             <img
                 src="../images/seed.png"
                 alt="씨앗 캐릭터"
                 class="rw-complete-seed"
             >
 
-            <!-- 완료 안내 -->
             <p class="rw-complete-label">
                 🌱 단어 읽기 1단계 완료
             </p>
 
-            <h1 class="rw-complete-title" tabindex="-1">
+            <h1
+                class="rw-complete-title"
+                tabindex="-1">
                 단어를 모두 배웠어!
             </h1>
 
@@ -505,25 +594,18 @@ function showLevelComplete() {
                 이제 다음 단계로 넘어가 볼까요?
             </p>
 
-            <!-- 완료 후 이동 버튼 -->
             <div class="rw-complete-actions">
 
-                <!-- Level 2 이동 -->
                 <a
                     href="./level2.html"
                     class="rw-complete-home">
-
                     🌿 2단계로 넘어가기 →
-
                 </a>
 
-                <!-- 단계 선택 화면 -->
                 <a
                     href="./select-level.html"
                     class="rw-complete-select">
-
                     단계 다시 선택하기
-
                 </a>
 
             </div>
@@ -531,131 +613,83 @@ function showLevelComplete() {
         </section>
     `;
 
-    // 완료 메시지에 포커스
-    page.querySelector(".rw-complete-title").focus();
+    page.querySelector(
+        ".rw-complete-title"
+    ).focus();
 }
 
-
-/* ========================================
-   다음 단어로 이동
-======================================== */
+// ========================================
+// 14. 다음 단어로 이동
+// ========================================
 
 function nextWord() {
-
-    // 음성 인식 중단
     stopRecognition();
 
-    // 재생 중인 음성 종료
     if ("speechSynthesis" in window) {
         window.speechSynthesis.cancel();
     }
 
-    // 다음 단어로 이동
     currentIndex++;
 
-    // Level 1의 모든 단어를 학습한 경우
     if (currentIndex >= words.length) {
-
-        // 기존 alert 대신 완료 화면 표시
         showLevelComplete();
-
         return;
     }
 
-    // 다음 단어 화면 표시
     showWord();
 }
 
+// ========================================
+// 15. 이전 단어로 이동
+// ========================================
+
+function previousWord() {
+    if (currentIndex <= 0) {
+        return;
+    }
+
+    stopRecognition();
+
+    if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+    }
+
+    currentIndex--;
+
+    showWord();
+
+    micBtn.disabled = false;
+    listenBtn.disabled = false;
+}
 
 // ========================================
-// 9. 버튼 이벤트 연결
+// 16. 버튼 이벤트 연결
 // ========================================
 
-// 단어 음성 듣기
 listenBtn.addEventListener(
     "click",
     playSound
 );
 
-// 직접 읽기
 micBtn.addEventListener(
     "click",
     startReading
 );
 
-// 다음 단어
 nextBtn.addEventListener(
     "click",
     nextWord
 );
 
-
-// ========================================
-// 10. 첫 화면 실행
-// ========================================
-
-/* ========================================
-   이전 문제로 돌아가기
-   Level 1 / Level 2 / Level 3 공통
-======================================== */
-
-// 이전 문제 버튼
-const prevBtn = document.getElementById("prevBtn");
-
-
-// 현재 문제 번호에 따라 버튼 활성화
-function updatePrevButton() {
-
-    if (!prevBtn) return;
-
-    // 첫 번째 문제에서는 이전 버튼 비활성화
-    prevBtn.disabled = (currentIndex === 0);
-
-}
-
-
-// 이전 문제로 이동
-function previousWord() {
-
-    // 첫 번째 문제라면 이동하지 않음
-    if (currentIndex <= 0) {
-        return;
-    }
-
-    // 음성 인식 중단
-    stopRecognition();
-
-    // 재생 중인 음성 종료
-    if ("speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-    }
-
-    // 이전 문제 번호로 변경
-    currentIndex--;
-
-    // 이전 문제 화면 다시 표시
-    showWord();
-
-    // 마이크 버튼 활성화
-    micBtn.disabled = false;
-
-    // Level 1, Level 2의 음성 듣기 버튼 활성화
-    if (
-        typeof listenBtn !== "undefined" &&
-        listenBtn
-    ) {
-        listenBtn.disabled = false;
-    }
-
-    // 이전 버튼 상태 갱신
-    updatePrevButton();
-
-}
-
-
-// 이전 문제 버튼 클릭 이벤트
 if (prevBtn) {
-    prevBtn.addEventListener("click", previousWord);
+    prevBtn.addEventListener(
+        "click",
+        previousWord
+    );
 }
+
+// ========================================
+// 17. 첫 화면 실행
+// ========================================
 
 showWord();
