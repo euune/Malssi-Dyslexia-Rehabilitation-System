@@ -1,0 +1,160 @@
+{
+  "scope": "아이가 일상에서 쓰는 낱말 중심. 동음이의어는 vocab의 한 의미로 고정. 범위 밖 표현이 존재하지 않는다고 단정하지 않음.",
+  "sources": [
+    {
+      "title": "국립국어원 한국어 학습용 어휘 목록 (2003)",
+      "url": "https://www.korean.go.kr/front/etcData/etcDataView.do?etc_seq=70",
+      "use": "후보 대조, 출처: 국립국어원, 공공누리 제1유형"
+    },
+    {
+      "title": "Open Korean Text nouns list",
+      "url": "https://github.com/open-korean-text/open-korean-text/blob/master/src/main/resources/org/openkoreantext/processor/util/noun/nouns.txt",
+      "use": "누락 후보 탐색. 단어 목록 원본은 앱에 재배포하지 않음"
+    }
+  ],
+  "combinationCount": 2765,
+  "combinationSha256": "32c9634a5b75b88d34be7d448301663db26f64af118a409f74976c5b552ea49e",
+  "approvedReachableWords": [
+    "가만",
+    "가면",
+    "가방",
+    "개",
+    "거만",
+    "구름",
+    "그림",
+    "나방",
+    "날",
+    "남",
+    "널",
+    "누님",
+    "눈",
+    "눈사람",
+    "느림",
+    "달걀",
+    "달빛",
+    "묵",
+    "문",
+    "문소리",
+    "물",
+    "밀",
+    "박",
+    "발",
+    "밤",
+    "밥",
+    "배",
+    "벌",
+    "범",
+    "법",
+    "북",
+    "불",
+    "비둘기",
+    "비행기",
+    "사",
+    "사탕",
+    "새",
+    "소",
+    "소방차",
+    "손톱깎이",
+    "연필깎이",
+    "차",
+    "코",
+    "파",
+    "하",
+    "해"
+  ],
+  "addedEverydayWords": [
+    "가만",
+    "거만",
+    "나방",
+    "날",
+    "남",
+    "널",
+    "누님",
+    "느림",
+    "묵",
+    "밀",
+    "박",
+    "범",
+    "법",
+    "북",
+    "사",
+    "하",
+    "문소리"
+  ],
+  "excludedReferenceMatches": [
+    {
+      "word": "가망",
+      "reason": "추상적인 성인 사용 어휘로 이번 일상 낱말 범위에서 제외"
+    },
+    {
+      "word": "가명",
+      "reason": "성인 사용 맥락이 많은 추상어로 이번 범위에서 제외"
+    },
+    {
+      "word": "가변",
+      "reason": "전문 개념"
+    },
+    {
+      "word": "나병",
+      "reason": "일상 아동 어휘가 아닌 질병명"
+    },
+    {
+      "word": "낙",
+      "reason": "일상 아동 어휘가 아닌 추상어"
+    },
+    {
+      "word": "납",
+      "reason": "이번 일상 낱말 범위에서 제외한 재료명"
+    },
+    {
+      "word": "넉",
+      "reason": "수 관형사"
+    },
+    {
+      "word": "닉",
+      "reason": "고유명사·외래어 조각"
+    },
+    {
+      "word": "민",
+      "reason": "접두사·고유명사 조각"
+    },
+    {
+      "word": "바",
+      "reason": "의존명사 또는 성인 대상 외래어"
+    },
+    {
+      "word": "벅",
+      "reason": "드물게 쓰이는 말"
+    },
+    {
+      "word": "처",
+      "reason": "드물게 쓰이는 한자어"
+    },
+    {
+      "word": "카",
+      "reason": "외래어·문자 이름 맥락"
+    }
+  ],
+  "supplementalReview": [
+    {
+      "word": "느림",
+      "decision": "일상에서 쓰는 상태 표현으로 포함"
+    },
+    {
+      "word": "문소리",
+      "decision": "일상 복합 명사로 포함"
+    },
+    {
+      "word": "누림",
+      "decision": "이번 아동 일상 낱말 범위에서 제외"
+    },
+    {
+      "word": "소방과",
+      "decision": "기관 부서명으로 이번 범위에서 제외"
+    },
+    {
+      "word": "구림",
+      "decision": "비표준 구어·방언 맥락으로 이번 범위에서 제외"
+    }
+  ]
+}

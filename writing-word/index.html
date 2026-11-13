@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>단어 쓰기 · 말씨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="icon-btn" id="home-link" href="../index.html" aria-label="정원으로">🏡</a>
+    <div class="growth">
+      <div class="growth-label"><span id="seed-name">씨앗</span> · <span id="stage-name">아기 씨앗</span></div>
+      <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
+    </div>
+    <button class="icon-btn" id="btn-text" type="button" aria-label="글자 크게" aria-pressed="false">가+</button>
+    <button class="icon-btn" id="btn-sound" type="button" aria-label="소리 듣기" disabled>🔊</button>
+  </header>
+  <main class="board ww-board">
+    <section class="seed-strip scene" aria-label="씨앗의 이야기">
+      <div class="seed-wrap"><svg id="seed" viewBox="0 0 200 200" aria-hidden="true"></svg></div>
+      <div class="bubble" id="bubble" aria-live="polite"></div>
+    </section>
+    <section class="panel ww-panel" id="activity-panel" aria-label="단어 쓰기 놀이" tabindex="-1"></section>
+  </main>
+  <footer class="ww-credits"><a href="image-credits.html" target="_blank" rel="noopener">그림 출처</a></footer>
+  <div class="overlay hidden" id="overlay"></div>
+  <dialog class="ww-pause" id="pause-dialog" aria-labelledby="pause-title" aria-describedby="pause-description">
+    <div id="pause-picture" class="ww-pause-picture"></div>
+    <h2 id="pause-title">우리 잠깐 쉬어 갈까?</h2>
+    <p id="pause-description">고른 조각은 그대로 둘게. 편할 때 함께 이어 가자.</p>
+    <div class="ww-actions">
+      <button class="btn primary" id="btn-resume" type="button" autofocus>계속 만들기</button>
+      <button class="btn ghost" id="btn-finish" type="button">오늘은 여기까지</button>
+    </div>
+  </dialog>
+  <script src="../js/hangul.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/speech.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/db-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/seed.js"></script>
+  <script src="../js/growth.js"></script>
+  <script src="data.js"></script>
+  <script src="media.js"></script>
+  <script src="logic.js"></script>
+  <script src="session.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
