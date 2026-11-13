@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>말씨 · 쓰기 – 문장 2단계</title>
+  <meta name="description" content="말씨 문장 쓰기 2단계: 단어 카드 순서 배열">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-level="2">
+  <!-- 말씨 공통 상단 바 -->
+  <header class="topbar">
+    <a class="icon-btn" href="../index.html" aria-label="정원으로">🏡</a>
+    <div class="growth">
+      <div class="growth-label"><span id="seed-name">말씨</span> · <span id="stage-name">아기 씨앗</span></div>
+      <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
+    </div>
+  </header>
+
+  <!-- 2단계 놀이 화면 (play.js 가 그림) -->
+  <main id="app"></main>
+  <footer class="ws-credits"><a href="../writing-word/image-credits.html" target="_blank" rel="noopener">그림 출처</a></footer>
+  <div class="overlay hidden" id="overlay"></div>
+
+  <!-- 말씨 공통 기능: 자소 비교·피드백·음성·저장·씨앗·성장 -->
+  <script src="../js/hangul.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/speech.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/db-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/seed.js"></script>
+  <script src="../js/growth.js"></script>
+
+  <!-- 문장 쓰기: 과제 데이터 → 로직 → 놀이 화면 -->
+  <script src="data.js"></script>
+  <script src="logic.js"></script>
+  <script src="play.js"></script>
+</body>
+</html>

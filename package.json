@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "node scripts/dev-server.cjs",
     "check": "node scripts/check.cjs",
-    "test": "node writing-word/logic.test.cjs"
+    "test": "node writing-word/logic.test.cjs && node writing-sentence/logic.test.cjs"
   },
   "engines": { "node": ">=20" }
 }
