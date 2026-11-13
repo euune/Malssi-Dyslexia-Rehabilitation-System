@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>말씨 · 쓰기 – 문장 단계 선택</title>
+  <meta name="description" content="말씨 문장 쓰기 1·2·3단계 중 원하는 단계를 선택하는 화면">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/common.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 말씨 공통 상단 바 (단어 읽기·동화 읽기와 같은 구조) -->
+  <header class="topbar">
+    <a class="icon-btn" href="../index.html" aria-label="정원으로">🏡</a>
+    <div class="growth">
+      <div class="growth-label"><span id="seed-name">말씨</span> · <span id="stage-name">아기 씨앗</span></div>
+      <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
+    </div>
+  </header>
+
+  <!-- 단계 선택 화면 (select-level.js 가 그림) -->
+  <main id="app"></main>
+  <div class="overlay hidden" id="overlay"></div>
+
+  <!-- 말씨 공통 기능 -->
+  <script src="../js/hangul.js"></script>
+  <script src="../js/engine.js"></script>
+  <script src="../js/speech.js"></script>
+  <script src="../js/store.js"></script>
+  <script src="../js/db-config.js"></script>
+  <script src="../js/db.js"></script>
+  <script src="../js/seed.js"></script>
+  <script src="../js/growth.js"></script>
+
+  <!-- 문장 쓰기: 과제 데이터 → 로직 → 단계 선택 -->
+  <script src="data.js"></script>
+  <script src="logic.js"></script>
+  <script src="select-level.js"></script>
+</body>
+</html>
