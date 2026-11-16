@@ -27,7 +27,8 @@
     return g;
   }
 
-  // 새 씨앗 캐릭터 그림(images/seeds/). <svg id="seed" data-art="character"> 인 화면(정원 홈)에서만 사용
+  // 새 씨앗 캐릭터 그림(images/seeds/). 정원 홈과 모든 게임 화면이 같은 그림을 씀
+  // (예전 그림이 필요하면 <svg id="seed" data-art="classic">)
   var SCRIPT_SRC = document.currentScript && document.currentScript.src;
   var CHARACTER = ['1-baby-seed', '2-seed', '3-sprouting', '4-sprout', '5-sapling', '6-tree', '7-flower-fruit'];
   function characterUrl(stage) {
@@ -36,7 +37,7 @@
 
   function render(stage) {
     var svg = document.getElementById('seed');
-    var url = svg.getAttribute('data-art') === 'character' && SCRIPT_SRC ? characterUrl(stage) : '';
+    var url = svg.getAttribute('data-art') !== 'classic' && SCRIPT_SRC ? characterUrl(stage) : '';
     if (url) {
       // viewBox 200×200 안에 200×240 그림을 아래쪽 맞춤으로 (반응 애니메이션은 .seed-body 에 그대로 적용)
       svg.innerHTML = '<g class="seed-body"><image href="' + url + '" x="16" y="0" width="168" height="200" preserveAspectRatio="xMidYMax meet"/></g>';
@@ -54,6 +55,27 @@
         '<circle cx="74" cy="152" r="6" fill="var(--cheek)" opacity=".7"/><circle cx="126" cy="152" r="6" fill="var(--cheek)" opacity=".7"/>' +
         '<path class="mouth" d="M92 154 Q100 161 108 154" stroke="var(--ink)" stroke-width="3" fill="none" stroke-linecap="round"/>' +
       '</g>';
+  }
+
+  // 단어 읽기 화면은 <img class="rw-seed-image"> 로 씨앗을 보여 줌 → 지금 성장 단계의 캐릭터 그림으로 바꿈
+  function currentStage() {
+    try { return SG.engine.stageOf(SG.store.get().exp || 0); } catch (e) { return 0; }
+  }
+  function syncSeedImages() {
+    if (!SCRIPT_SRC) return;
+    var imgs = document.querySelectorAll('img.rw-seed-image');
+    if (!imgs.length) return;
+    var url = characterUrl(currentStage());
+    Array.prototype.forEach.call(imgs, function (img) {
+      if (img.getAttribute('src') !== url) { img.setAttribute('src', url); img.alt = '씨앗 캐릭터'; }
+    });
+  }
+  if (typeof document !== 'undefined' && root.MutationObserver) {
+    var startSync = function () {
+      syncSeedImages();
+      new MutationObserver(syncSeedImages).observe(document.body, { childList: true, subtree: true });
+    };
+    if (document.body) startSync(); else document.addEventListener('DOMContentLoaded', startSync, { once: true });
   }
 
   var animTimer = null;
