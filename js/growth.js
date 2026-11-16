@@ -179,9 +179,21 @@
    * @param {number} n
    * @param {object} [fx] {text: 날아갈 말, from: 출발 요소, big: 목표 도달 여부}
    */
+  /** 목표에 도달한 낱말을 '배운 낱말'로 기억 (정원 홈에서 걸어 다님). 문장·반짝이는 제외 */
+  function rememberWord(st, text) {
+    var w = String(text || '').trim();
+    if (!/^[가-힣]{1,8}$/.test(w)) return;
+    var kind = /writing/.test(root.location && root.location.pathname || '') ? 'write' : 'read';
+    var list = (Array.isArray(st.learned) ? st.learned : []).filter(function (x) { return x && x.w !== w; });
+    list.push({ w: w, k: kind, at: Date.now() });
+    st.learned = list.slice(-40);
+  }
+
   function addExp(n, fx) {
     var st = SG.store.get(), E = SG.engine, before = E.stageOf(st.exp);
-    st.exp += n; SG.store.save(); // 저장은 바로 (화면을 떠나도 잃지 않게)
+    st.exp += n;
+    if (fx && fx.big) rememberWord(st, fx.text);
+    SG.store.save(); // 저장은 바로 (화면을 떠나도 잃지 않게)
     var land = fx ? flyToSeed(fx.text, fx.from, fx.big) : Promise.resolve();
     return land.then(function () {
       var after = update();

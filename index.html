@@ -10,27 +10,42 @@
   <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/common.css?v=202611070336">
   <link rel="stylesheet" href="css/style.css?v=202611070336">
+  <link rel="stylesheet" href="css/garden-home.css?v=20261116">
   <link rel="stylesheet" href="css/guide.css?v=20261116">
 </head>
 <body>
-  <header class="topbar">
-    <button class="icon-btn" id="btn-home" aria-label="정원으로">🏡</button>
-    <div class="growth">
-      <div class="growth-label"><span id="seed-name">씨앗</span> · <span id="stage-name">아기 씨앗</span></div>
-      <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
-    </div>
-    <button class="icon-btn" id="btn-text" aria-label="글자 크게">가+</button>
-  </header>
+  <!-- 정원 홈: 하늘에 뜬 구름(🏡 · 말씨 · 성장 게이지) + 씨앗 · 말풍선 + 걸어 다니는 배운 낱말 (css/garden-home.css, js/garden-home.js) -->
+  <section class="garden" id="garden" aria-label="말씨 정원">
+    <svg class="gh-sun" viewBox="0 0 100 100" aria-hidden="true">
+      <g class="gh-rays" stroke="#f7d36b" stroke-width="5" stroke-linecap="round"><path d="M50 4v12M50 84v12M4 50h12M84 50h12M17 17l8 8M75 75l8 8M83 17l-8 8M25 75l-8 8"/></g>
+      <circle cx="50" cy="50" r="24" fill="#ffe08a"/><circle cx="50" cy="50" r="18" fill="#ffd25e"/>
+    </svg>
+    <div id="gh-cloudlets" aria-hidden="true"></div>
+    <svg class="gh-land" viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0 8 C40 -2 70 2 100 9 C140 0 180 -3 220 7 C260 -1 300 0 340 8 C365 3 385 4 400 7 V100 H0Z" fill="#c9e6c2" opacity=".8"/>
+      <path d="M0 18 C60 6 120 10 190 16 S320 26 400 12 V100 H0Z" fill="#a7d68a"/>
+      <path d="M0 40 C90 30 170 34 240 40 S350 48 400 38 V100 H0Z" fill="#86c26c"/>
+    </svg>
+    <div class="gh-trees" id="gh-trees" aria-hidden="true"></div>
+    <div class="gh-deco" id="gh-deco" aria-hidden="true"></div>
 
-  <!-- 씨앗과 게임을 한 덩어리로: 위에 작은 씨앗 + 말풍선, 바로 아래 게임 -->
-  <main class="board">
-    <section class="seed-strip scene" id="scene">
-      <div class="seed-wrap">
-        <svg id="seed" viewBox="0 0 200 200" aria-hidden="true"></svg>
-        <div class="bloom-layer" id="bloom-layer"></div>
+    <header class="gh-hud">
+      <button class="icon-btn" id="btn-home" aria-label="정원으로">🏡</button>
+      <div class="growth">
+        <div class="growth-label"><span id="seed-name">말씨</span> · <span id="stage-name">아기 씨앗</span></div>
+        <div class="growth-bar" role="progressbar" aria-label="씨앗 성장"><div id="growth-fill"></div></div>
       </div>
-      <div class="bubble" id="bubble" aria-live="polite"></div>
-    </section>
+    </header>
+
+    <div class="bubble" id="bubble" aria-live="polite"></div>
+    <div class="gh-seed seed-wrap">
+      <svg id="seed" data-art="character" viewBox="0 0 200 200" aria-hidden="true"></svg>
+      <div class="bloom-layer" id="bloom-layer"></div>
+    </div>
+    <div id="gh-words"></div>
+  </section>
+
+  <main class="board">
     <div class="panel" id="panel"></div>
   </main>
 
@@ -43,8 +58,8 @@
   <script src="js/store.js?v=202611070336"></script>
   <script src="js/db-config.js?v=202611090001"></script>
   <script src="js/db.js?v=202611090001"></script>
-  <script src="js/seed.js?v=202611070336"></script>
-  <script src="js/growth.js?v=202611070336"></script>
+  <script src="js/seed.js?v=20261116"></script>
+  <script src="js/growth.js?v=20261116"></script>
 
 
   <!-- 화면 공통(홈·설정) + 활동 타일 4개 (동화 읽기만 연결됨, 나머지는 팀원 게임 자리) -->
@@ -55,6 +70,7 @@
   <script src="js/activities/write-sentence.js?v=20261113"></script>
   <script src="js/intro.js?v=202611090001"></script>
   <script src="js/main.js?v=202611070336"></script>
+  <script src="js/garden-home.js?v=20261116"></script>
   <!-- 설명서 버튼 및 팝업 기능 -->
 <script src="js/guide.js?v=20261116">
 </script>

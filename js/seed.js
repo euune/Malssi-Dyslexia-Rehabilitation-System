@@ -27,8 +27,21 @@
     return g;
   }
 
+  // 새 씨앗 캐릭터 그림(images/seeds/). <svg id="seed" data-art="character"> 인 화면(정원 홈)에서만 사용
+  var SCRIPT_SRC = document.currentScript && document.currentScript.src;
+  var CHARACTER = ['1-baby-seed', '2-seed', '3-sprouting', '4-sprout', '5-sapling', '6-tree', '7-flower-fruit'];
+  function characterUrl(stage) {
+    try { return new URL('../images/seeds/' + (CHARACTER[stage] || CHARACTER[0]) + '.svg', SCRIPT_SRC).href; } catch (e) { return ''; }
+  }
+
   function render(stage) {
     var svg = document.getElementById('seed');
+    var url = svg.getAttribute('data-art') === 'character' && SCRIPT_SRC ? characterUrl(stage) : '';
+    if (url) {
+      // viewBox 200×200 안에 200×240 그림을 아래쪽 맞춤으로 (반응 애니메이션은 .seed-body 에 그대로 적용)
+      svg.innerHTML = '<g class="seed-body"><image href="' + url + '" x="16" y="0" width="168" height="200" preserveAspectRatio="xMidYMax meet"/></g>';
+      return;
+    }
     svg.innerHTML =
       '<ellipse cx="100" cy="182" rx="80" ry="12" fill="var(--soil)"/>' +
       '<g class="growth-g">' + growthSvg(stage) + '</g>' +
