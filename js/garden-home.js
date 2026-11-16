@@ -239,5 +239,20 @@
   if (document.readyState === 'complete') ready();
   else root.addEventListener('load', ready, { once: true });
 
+  /* ---------------- 4) 땅속 게임 방: 활동 고르기 화면일 때만 아래 게임 보드를 땅속처럼 (정원은 그대로) ---------------- */
+  function syncUnderground() {
+    var panel = $('panel');
+    var board = panel && panel.closest ? panel.closest('.board') : null;
+    if (!panel || !board) return;
+    var home = !!panel.querySelector('.home .act-grid');
+    board.classList.toggle('gh-under', home);
+  }
+  (function watchPanel() {
+    var panel = $('panel');
+    if (!panel) return;
+    syncUnderground();
+    if (root.MutationObserver) new MutationObserver(syncUnderground).observe(panel, { childList: true });
+  })();
+
   SG.gardenHome = { learnedWords: learnedWords };
 })(typeof window !== 'undefined' ? window : globalThis);
