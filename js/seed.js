@@ -31,13 +31,20 @@
   // (예전 그림이 필요하면 <svg id="seed" data-art="classic">)
   var SCRIPT_SRC = document.currentScript && document.currentScript.src;
   var CHARACTER = ['1-baby-seed', '2-seed', '3-sprouting', '4-sprout', '5-sapling', '6-tree', '7-flower-fruit'];
-  function characterUrl(stage) {
-    try { return new URL('../images/seeds/' + (CHARACTER[stage] || CHARACTER[0]) + '.svg', SCRIPT_SRC).href; } catch (e) { return ''; }
+  // smile: 게임 화면용 — 간접 피드백으로 도와주는 씨앗이라 늘 웃는 얼굴, 작은 단계는 씨앗이 크게 보이도록 잘라 둔 그림
+  function characterUrl(stage, smile) {
+    try { return new URL('../images/seeds/' + (smile ? 'smile/' : '') + (CHARACTER[stage] || CHARACTER[0]) + '.svg', SCRIPT_SRC).href; } catch (e) { return ''; }
   }
 
   function render(stage) {
     var svg = document.getElementById('seed');
-    var url = svg.getAttribute('data-art') !== 'classic' && SCRIPT_SRC ? characterUrl(stage) : '';
+    var art = svg.getAttribute('data-art');            // character = 정원 홈, classic = 예전 그림, 없음 = 게임 화면(웃는 얼굴)
+    var smile = art !== 'character';
+    var url = art !== 'classic' && SCRIPT_SRC ? characterUrl(stage, smile) : '';
+    if (url && smile) {
+      svg.innerHTML = '<g class="seed-body"><image href="' + url + '" x="0" y="0" width="200" height="200" preserveAspectRatio="xMidYMax meet"/></g>';
+      return;
+    }
     if (url) {
       // viewBox 200×200 안에 200×240 그림을 아래쪽 맞춤으로 (반응 애니메이션은 .seed-body 에 그대로 적용)
       svg.innerHTML = '<g class="seed-body"><image href="' + url + '" x="16" y="0" width="168" height="200" preserveAspectRatio="xMidYMax meet"/></g>';
@@ -65,7 +72,7 @@
     if (!SCRIPT_SRC) return;
     var imgs = document.querySelectorAll('img.rw-seed-image');
     if (!imgs.length) return;
-    var url = characterUrl(currentStage());
+    var url = characterUrl(currentStage(), true);
     Array.prototype.forEach.call(imgs, function (img) {
       if (img.getAttribute('src') !== url) { img.setAttribute('src', url); img.alt = '씨앗 캐릭터'; }
     });

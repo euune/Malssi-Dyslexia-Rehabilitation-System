@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="22 78 156 158" width="312" height="316">
+<defs>
+  <radialGradient id="body" cx="40%" cy="32%" r="75%">
+    <stop offset="0%" stop-color="#E2AE74"/><stop offset="55%" stop-color="#C98D52"/><stop offset="100%" stop-color="#A8703C"/>
+  </radialGradient>
+  <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#A6DB8F"/><stop offset="100%" stop-color="#7CC36D"/>
+  </linearGradient>
+  <linearGradient id="leafD" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#7CC36D"/><stop offset="100%" stop-color="#4F9A54"/>
+  </linearGradient>
+  <radialGradient id="crown" cx="40%" cy="30%" r="80%">
+    <stop offset="0%" stop-color="#A6DB8F"/><stop offset="60%" stop-color="#7CC36D"/><stop offset="100%" stop-color="#4F9A54"/>
+  </radialGradient>
+  <linearGradient id="trunk" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#8C6239"/><stop offset="100%" stop-color="#6E4A2A"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#F5C64B" stop-opacity=".55"/><stop offset="100%" stop-color="#F5C64B" stop-opacity="0"/>
+  </radialGradient>
+</defs><ellipse cx="100" cy="226" rx="78" ry="9" fill="#B9905F" opacity=".35"/><path d="M100 146 C100 128 100 112 100 100" stroke="#4F9A54" stroke-width="6" fill="none" stroke-linecap="round"/><g transform="rotate(-25 80 98)"><ellipse cx="80" cy="98" rx="22" ry="11" fill="url(#leaf)"/><path d="M62.4 98 L97.6 98" stroke="#4F9A54" stroke-width="1.6" opacity=".45" stroke-linecap="round"/></g><g transform="rotate(25 120 98)"><ellipse cx="120" cy="98" rx="22" ry="11" fill="url(#leaf)"/><path d="M102.4 98 L137.6 98" stroke="#4F9A54" stroke-width="1.6" opacity=".45" stroke-linecap="round"/></g>
+  <g>
+    <ellipse cx="100" cy="217.8" rx="49.14000000000001" ry="9" fill="#000" opacity=".12"/>
+    <path d="M100 138.6 C142.12 138.6 146.8 171.72 146.8 186.21 C146.8 213.12 125.74000000000001 221.4 100 221.4 C74.25999999999999 221.4 53.199999999999996 213.12 53.199999999999996 186.21 C53.199999999999996 171.72 57.879999999999995 138.6 100 138.6 Z" fill="url(#body)"/>
+    <ellipse cx="80.344" cy="155.988" rx="9.9" ry="5.4" transform="rotate(-25 80.344 155.988)" fill="#fff" opacity=".45"/>
+    <circle cx="84.50" cy="179.10" r="5.40" fill="#4A3426"/><circle cx="86.40" cy="177.10" r="2.00" fill="#fff"/><circle cx="82.90" cy="181.10" r="0.90" fill="#fff" opacity=".8"/><circle cx="115.50" cy="179.10" r="5.40" fill="#4A3426"/><circle cx="117.40" cy="177.10" r="2.00" fill="#fff"/><circle cx="113.90" cy="181.10" r="0.90" fill="#fff" opacity=".8"/>
+    <ellipse cx="71.20" cy="188.10" rx="7.20" ry="4.50" fill="#F3A08C" opacity=".9"/><ellipse cx="128.80" cy="188.10" rx="7.20" ry="4.50" fill="#F3A08C" opacity=".9"/>
+    <path d="M90.50 191.10 Q100 206.10 109.50 191.10 Z" fill="#5A3324" stroke="#4A3426" stroke-width="1.60" stroke-linejoin="round"/><ellipse cx="100" cy="197.30" rx="4.60" ry="2.40" fill="#E5735F"/>
+  </g></svg>
