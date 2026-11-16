@@ -69,7 +69,7 @@
 
   /* ---------------- 2) 단계 배지의 씨앗 그림은 js/growth.js 가 모든 화면에 똑같이 넣음 ---------------- */
 
-  /* ---------------- 3) 걸어 다니는 낱말 ---------------- */
+  /* ---------------- 3) 기어 다니는 낱말 지렁이 ---------------- */
   function learnedWords() {
     var st = SG.store ? SG.store.get() : {};
     var list = [];
@@ -107,7 +107,6 @@
     }
     return best || { x: 10, y: 90 };
   }
-  var SPROUT = '<svg class="gh-sprout" viewBox="0 0 22 14" aria-hidden="true"><path d="M11 14 V6" stroke="#4f9a54" stroke-width="2" stroke-linecap="round"/><ellipse cx="6.5" cy="5" rx="5" ry="3" transform="rotate(-20 6.5 5)" fill="#7cc36d"/><ellipse cx="15.5" cy="5" rx="5" ry="3" transform="rotate(20 15.5 5)" fill="#7cc36d"/></svg>';
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
   function makeWord(item, at, isNew) {
@@ -115,9 +114,12 @@
     el.type = 'button';
     el.className = 'gh-word ' + item.k + (isNew ? ' new' : '');
     el.setAttribute('aria-label', item.w + ' 듣기');
-    el.innerHTML = SPROUT + '<span class="gh-tag">' + esc(item.w) + '</span><span class="gh-feet" aria-hidden="true"><i></i><i></i></span>';
+    // 지렁이: 머리(눈·볼) + 글자 한 칸씩 몸마디. 몸마디가 차례로 물결치며 기어감
+    var segs = Array.from(item.w).map(function (ch, i) { return '<span class="gh-seg" style="--i:' + (i + 1) + '">' + esc(ch) + '</span>'; }).join('');
+    el.innerHTML = '<span class="gh-head" aria-hidden="true"><i class="eye"></i><i class="eye"></i><i class="cheek"></i></span>' +
+      segs;
     $('gh-words').appendChild(el);
-    var w = { el: el, text: item.w, x: at.x, y: at.y, target: null, speed: 2 + Math.random() * 1.6, wait: Math.random() * 2, bob: Math.random() * 6 };
+    var w = { el: el, text: item.w, x: at.x, y: at.y, target: null, speed: 1.4 + Math.random() * 1.2, wait: Math.random() * 2, bob: Math.random() * 6, dir: Math.random() < 0.5 ? -1 : 1 };
     el.addEventListener('click', function () { tap(w); });
     words.push(w);
     w.target = randomSpot(w);
@@ -127,11 +129,12 @@
   function place(w, t) {
     var depth = 0.86 + (w.y - WALK.y0) / (WALK.y1 - WALK.y0) * 0.22;
     var moving = !paused && w.wait <= 0;
-    var bob = moving ? Math.sin(t / 160 + w.bob) * 1.4 : 0;
+    var bob = 0; // 지렁이는 몸마디가 물결치므로 통째로 들썩이지 않음
     var px = w.x / 100 * garden.clientWidth, py = w.y / 100 * garden.clientHeight;
     w.el.style.transform = 'translate(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px) translate(-50%,-100%) translateY(' + bob.toFixed(1) + 'px) scale(' + depth.toFixed(3) + ')';
     w.el.style.zIndex = String(20 + Math.round(w.y / 10));
     w.el.classList.toggle('walking', moving);
+    w.el.classList.toggle('to-left', w.dir < 0); // 머리가 가는 쪽을 봄
   }
   function separate() {
     var W = garden.clientWidth, H = garden.clientHeight, R = rects();
@@ -161,6 +164,7 @@
         var dx = w.target.x - w.x, dy = w.target.y - w.y, d = Math.hypot(dx, dy * 2);
         if (d < 0.5) { w.target = randomSpot(w); w.wait = 1.5 + Math.random() * 3; return; }
         var step = Math.min(d, w.speed * dt), nx = w.x + dx / d * step, ny = w.y + dy * 2 / d * step / 2;
+        if (Math.abs(dx) > 0.3) w.dir = dx < 0 ? -1 : 1;
         if (blocked(nx, ny, R)) { w.target = randomSpot(w); return; }
         w.x = nx; w.y = ny;
       });
@@ -208,7 +212,7 @@
     words.forEach(function (w) { place(w, 0); });
     writeSeen(all.map(function (x) { return x.w; }));
 
-    // 새로 배운 낱말: 씨앗에게서 톡 튀어나와 걸어감 (홈 인사말 뒤에)
+    // 새로 배운 낱말: 씨앗에게서 톡 튀어나와 기어감 (홈 인사말 뒤에)
     newOnes.forEach(function (item, i) {
       setTimeout(function () {
         var side = i % 2 ? 1 : -1;
