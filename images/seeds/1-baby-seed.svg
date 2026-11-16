@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" width="400" height="480">
+<defs>
+  <radialGradient id="body" cx="40%" cy="32%" r="75%">
+    <stop offset="0%" stop-color="#E2AE74"/><stop offset="55%" stop-color="#C98D52"/><stop offset="100%" stop-color="#A8703C"/>
+  </radialGradient>
+  <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#A6DB8F"/><stop offset="100%" stop-color="#7CC36D"/>
+  </linearGradient>
+  <linearGradient id="leafD" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#7CC36D"/><stop offset="100%" stop-color="#4F9A54"/>
+  </linearGradient>
+  <radialGradient id="crown" cx="40%" cy="30%" r="80%">
+    <stop offset="0%" stop-color="#A6DB8F"/><stop offset="60%" stop-color="#7CC36D"/><stop offset="100%" stop-color="#4F9A54"/>
+  </radialGradient>
+  <linearGradient id="trunk" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#8C6239"/><stop offset="100%" stop-color="#6E4A2A"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#F5C64B" stop-opacity=".55"/><stop offset="100%" stop-color="#F5C64B" stop-opacity="0"/>
+  </radialGradient>
+</defs><ellipse cx="100" cy="226" rx="78" ry="9" fill="#B9905F" opacity=".35"/>
+  <g>
+    <ellipse cx="100" cy="222.04000000000002" rx="33.852000000000004" ry="6.2" fill="#000" opacity=".12"/>
+    <path d="M100 167.48 C129.016 167.48 132.24 190.296 132.24 200.278 C132.24 218.816 117.732 224.52 100 224.52 C82.268 224.52 67.75999999999999 218.816 67.75999999999999 200.278 C67.75999999999999 190.296 70.984 167.48 100 167.48 Z" fill="url(#body)"/>
+    <ellipse cx="86.4592" cy="179.4584" rx="6.82" ry="3.7199999999999998" transform="rotate(-25 86.4592 179.4584)" fill="#fff" opacity=".45"/>
+    <path d="M84.5 194.76 q4.34 3.1 8.68 0" stroke="#4A3426" stroke-width="2.48" fill="none" stroke-linecap="round"/><path d="M106.82 194.76 q4.34 3.1 8.68 0" stroke="#4A3426" stroke-width="2.48" fill="none" stroke-linecap="round"/>
+    <ellipse cx="80.16" cy="201.58" rx="4.96" ry="3.1" fill="#F3A08C" opacity=".85"/>
+    <ellipse cx="119.84" cy="201.58" rx="4.96" ry="3.1" fill="#F3A08C" opacity=".85"/>
+    <ellipse cx="100" cy="205.3" rx="2.17" ry="1.55" fill="#4A3426" opacity=".8"/>
+  </g><text x="128" y="160" font-family="Arial Rounded MT Bold, Arial" font-weight="700" font-size="16" fill="#8FA4B8">z</text><text x="140" y="146" font-family="Arial" font-weight="700" font-size="12" fill="#B4C4D2">z</text></svg>

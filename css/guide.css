@@ -216,6 +216,33 @@
     font-size: 28px;
 }
 
+/* 씨앗 캐릭터 그림 (images/seeds/) */
+img.guide-stage-icon {
+    display: block;
+    width: 64px;
+    height: 77px;
+    object-fit: contain;
+}
+
+/* 아직 자라지 않은 단계는 살짝 흐리게 */
+.guide-stage:not(.is-current):not(.is-past) img.guide-stage-icon {
+    opacity: .55;
+    filter: grayscale(.35);
+}
+
+.guide-current-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+img.guide-current-icon {
+    flex: none;
+    width: 40px;
+    height: 48px;
+    object-fit: contain;
+}
+
 .guide-stage-number,
 .guide-stage-state {
     font-size: 11px;

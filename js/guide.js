@@ -11,6 +11,28 @@
     '🌰', '🌰', '🌱', '🌿', '🪴', '🌳', '🌸'
   ];
 
+  // 성장 단계별 씨앗 캐릭터 그림 (images/seeds/)
+  const STAGE_IMAGES = [
+    'images/seeds/1-baby-seed.svg',
+    'images/seeds/2-seed.svg',
+    'images/seeds/3-sprouting.svg',
+    'images/seeds/4-sprout.svg',
+    'images/seeds/5-sapling.svg',
+    'images/seeds/6-tree.svg',
+    'images/seeds/7-flower-fruit.svg'
+  ];
+
+  // 단계 그림 (그림이 없으면 기존 이모티콘으로 표시)
+  function stageImage(index, className) {
+    const src = STAGE_IMAGES[index];
+
+    if (!src) {
+      return `<span class="${className}" aria-hidden="true">${ICONS[index] || '🌱'}</span>`;
+    }
+
+    return `<img class="${className}" src="${src}" alt="" aria-hidden="true">`;
+  }
+
   const GUIDE_ID = 'malssi-guide-overlay';
 
   let lastFocused = null;
@@ -121,11 +143,7 @@
       return `
         <li class="guide-stage${cls}">
 
-          <span
-            class="guide-stage-icon"
-            aria-hidden="true">
-            ${ICONS[index] || '🌸'}
-          </span>
+          ${stageImage(index, 'guide-stage-icon')}
 
           <span class="guide-stage-number">
             ${index + 1}단계
@@ -197,9 +215,9 @@
             <!-- 나의 성장 상태 -->
             <div class="guide-current">
 
-              <strong>
+              <strong class="guide-current-title">
+                ${data.stage >= 0 ? stageImage(data.stage, 'guide-current-icon') : ''}
                 현재 씨앗:
-                ${ICONS[data.stage] || '🌱'}
                 ${escapeHtml(stageName)}
               </strong>
 
