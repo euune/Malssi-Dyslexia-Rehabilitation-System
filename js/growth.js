@@ -14,6 +14,13 @@
 
   function $(id) { return document.getElementById(id); }
      var STAGE_ICONS = ['🌰', '🌰', '🌱', '🌿', '🪴', '🌳', '🌸'];
+  // 단계 배지의 씨앗 그림 (처음 화면과 같은 그림) — 경로는 이 파일(js/growth.js) 위치를 기준으로 찾음
+  var SEED_IMAGE_NAMES = ['1-baby-seed', '2-seed', '3-sprouting', '4-sprout', '5-sapling', '6-tree', '7-flower-fruit'];
+  var IMAGE_BASE = (function () {
+    var cur = document.currentScript && document.currentScript.src;
+    try { return cur ? new URL('../images/seeds/', cur).href : 'images/seeds/'; } catch (e) { return 'images/seeds/'; }
+  })();
+  function stageImage(stage) { return IMAGE_BASE + (SEED_IMAGE_NAMES[stage] || SEED_IMAGE_NAMES[0]) + '.svg'; }
   var BUDS = [25, 50, 75]; // 성장 막대 위 꽃봉오리 자리(%) — 지나가면 꽃이 핌
 
   /** 상단 바를 정원처럼 꾸밀 요소를 한 번만 덧붙임 (HTML 은 그대로 두고 여기서 추가) */
@@ -53,6 +60,8 @@
   }
 
 
+  function stageOfIcon(icon) { return Number(icon.getAttribute('data-stage')) || 0; }
+
   /** 상단 바(이름·단계·막대)와 씨앗 모습을 저장된 경험치에 맞춤. force: 씨앗을 다시 그리기 */
   function update(force) {
         var st = SG.store.get(), E = SG.engine, stage = E.stageOf(st.exp);
@@ -60,7 +69,21 @@
     var pct = Math.round(E.stageProgress(st.exp) * 100);
     if ($('seed-name')) $('seed-name').textContent = '말씨';
     if ($('stage-name')) $('stage-name').textContent = E.STAGES[stage];
-    if ($('stage-icon')) $('stage-icon').textContent = STAGE_ICONS[stage] || '🌱';
+    var icon = $('stage-icon');
+    if (icon) {
+      var img = icon.querySelector('img');
+      if (!img) {
+        icon.textContent = '';
+        img = document.createElement('img');
+        img.alt = '';
+        // 그림을 못 불러오면 예전 이모지로
+        img.onerror = function () { icon.textContent = STAGE_ICONS[stageOfIcon(icon)] || '🌱'; };
+        icon.appendChild(img);
+      }
+      icon.setAttribute('data-stage', String(stage));
+      var src = stageImage(stage);
+      if (img.getAttribute('src') !== src) img.setAttribute('src', src);
+    }
     if ($('growth-fill')) $('growth-fill').style.width = pct + '%';
     var bar = document.querySelector('.growth-bar');
     if (bar) {

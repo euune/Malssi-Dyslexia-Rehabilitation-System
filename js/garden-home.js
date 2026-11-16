@@ -16,8 +16,6 @@
 
   var reduce = root.matchMedia && root.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var SEEN_KEY = 'malssi.garden-seen';
-  var SEED_IMAGES = ['1-baby-seed', '2-seed', '3-sprouting', '4-sprout', '5-sapling', '6-tree', '7-flower-fruit']
-    .map(function (n) { return 'images/seeds/' + n + '.svg'; });
   var LINES = ['‘{w}’! 기억나. 같이 읽어 볼까?', '‘{w}’는 네가 알려 준 말이야.', '‘{w}’, 이 말 정말 좋아!', '‘{w}’라고 들려줘서 고마워.'];
 
   function $(id) { return document.getElementById(id); }
@@ -69,20 +67,7 @@
     root.addEventListener('resize', setGW);
   }
 
-  /* ---------------- 2) 단계 배지에 씨앗 그림 ---------------- */
-  function syncChip() {
-    var name = $('stage-name');
-    if (!name || !SG.engine || !SG.store) return;
-    var stage = SG.engine.stageOf(SG.store.get().exp || 0);
-    var img = document.querySelector('.gh-stage-img');
-    if (!img) {
-      img = document.createElement('img');
-      img.className = 'gh-stage-img'; img.alt = ''; img.setAttribute('aria-hidden', 'true');
-      name.parentNode.insertBefore(img, name);
-    }
-    var src = SEED_IMAGES[stage] || SEED_IMAGES[0];
-    if (img.getAttribute('src') !== src) img.setAttribute('src', src);
-  }
+  /* ---------------- 2) 단계 배지의 씨앗 그림은 js/growth.js 가 모든 화면에 똑같이 넣음 ---------------- */
 
   /* ---------------- 3) 걸어 다니는 낱말 ---------------- */
   function learnedWords() {
@@ -249,10 +234,6 @@
   decorate();
   // 씨앗 그림이 그려진 뒤(크기가 정해진 뒤)에 낱말을 배치
   function ready() {
-    syncChip();
-    // 단계 이름이 바뀌면(성장) 배지 그림도 바꿈
-    var name = $('stage-name');
-    if (name && root.MutationObserver) new MutationObserver(syncChip).observe(name, { childList: true, characterData: true, subtree: true });
     startWords();
   }
   if (document.readyState === 'complete') ready();
