@@ -246,6 +246,31 @@
     if (!panel || !board) return;
     var home = !!panel.querySelector('.home .act-grid');
     board.classList.toggle('gh-under', home);
+    // '오늘은 여기까지' 화면(오늘의 정원 이야기)이면 정원이 밤으로
+    var heading = panel.querySelector('h2');
+    setNight(!home && !!heading && heading.textContent.indexOf('오늘의 정원 이야기') >= 0);
+  }
+
+  /* ---------------- 5) 밤의 정원: 달 · 별 · 반딧불 ---------------- */
+  function setNight(on) {
+    var garden = $('garden');
+    if (!garden) return;
+    if (on && !garden.querySelector('.gh-night-sky')) {
+      var sky = document.createElement('div');
+      sky.className = 'gh-night-sky';
+      sky.setAttribute('aria-hidden', 'true');
+      var h = '<span class="gh-moon"></span>';
+      [[8, 30], [16, 46], [24, 34], [33, 52], [41, 31], [52, 44], [60, 33], [69, 50], [77, 38], [88, 52], [94, 34], [12, 58], [48, 56], [83, 60]]
+        .forEach(function (p, i) {
+          h += '<span class="gh-star" style="left:' + p[0] + '%;top:' + p[1] + '%;--s:' + (i % 3 === 0 ? 4 : 3) + 'px;--t:' + (2 + (i % 4) * .6) + 's;--d:-' + (i * .37).toFixed(2) + 's"></span>';
+        });
+      [[14, 74], [30, 84], [62, 78], [80, 70], [45, 90], [90, 86]].forEach(function (p, i) {
+        h += '<span class="gh-firefly" style="left:' + p[0] + '%;top:' + p[1] + '%;--t:' + (6 + i) + 's;--d:-' + i * 1.3 + 's"></span>';
+      });
+      sky.innerHTML = h;
+      garden.appendChild(sky);
+    }
+    garden.classList.toggle('gh-night', on);
   }
   (function watchPanel() {
     var panel = $('panel');
